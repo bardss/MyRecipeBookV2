@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyRecipeBook</string>
+    <string name="rate">Rate:</string>
+    <string name="prep_time">Prep. time:</string>
 </resources>

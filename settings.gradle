@@ -12,6 +12,12 @@ dependencyResolutionManagement {
         mavenCentral()
     }
     versionCatalogs {
+        create('di') {
+            library('android', 'com.google.dagger:hilt-android:2.44')
+            library('compiler', 'com.google.dagger:hilt-compiler:2.44')
+            library('navigation', 'androidx.hilt:hilt-navigation-compose:1.0.0')
+            plugin('plugin', 'com.google.dagger.hilt.android').version("2.44")
+        }
         create('androidx') {
             library('core-ktx', 'androidx.core:core-ktx:1.10.1')
             library('lifecycle-runtime-ktx', 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1')
