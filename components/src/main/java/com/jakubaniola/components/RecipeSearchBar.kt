@@ -43,7 +43,7 @@ fun RecipeSearchBar(
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.Star,
-                    contentDescription = "Star icon"
+                    contentDescription = "Toggle search by starred recipes"
                 )
             }
         )
