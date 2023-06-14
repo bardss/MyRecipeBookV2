@@ -10,6 +10,11 @@ android {
 }
 
 dependencies {
+    // Data sources
+    implementation(project(":datalayer:datasource:database"))
+    implementation(project(":model"))
+
+    implementation(kotlinx.coroutines.android)
 
     // Unit Testing
     testImplementation(testlibs.bundles.junit)

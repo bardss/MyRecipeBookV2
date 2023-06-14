@@ -35,6 +35,14 @@ dependencyResolutionManagement {
             library("kotlin-bom", "org.jetbrains.kotlin:kotlin-bom:1.8.0")
             library("coil", "io.coil-kt:coil-compose:2.4.0")
         }
+        create("room") {
+            library("runtime", "androidx.room:room-runtime:2.5.1")
+            library("compiler", "androidx.room:room-compiler:2.5.1")
+            library("ktx", "androidx.room:room-ktx:2.5.1")
+        }
+        create("kotlinx") {
+            library("coroutines-android", "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+        }
     }
 }
 rootProject.name = "MyRecipeBook"
@@ -44,3 +52,4 @@ include(":feature:recipeslist")
 include(":common")
 include(":datalayer:repository")
 include(":datalayer:datasource:database")
+include(":model")
