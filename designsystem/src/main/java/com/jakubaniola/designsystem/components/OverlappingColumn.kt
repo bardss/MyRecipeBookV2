@@ -24,7 +24,7 @@ fun overlappingColumnMeasurePolicy(overlapFactor: Float) = MeasurePolicy { measu
     val placeables = measurables.map { measurable -> measurable.measure(constraints) }
     val width = placeables.maxOf { it.width }
     val height = placeables.last().height +
-            placeables.subList(0, placeables.size - 1).sumOf { (it.height * overlapFactor).toInt() }
+        placeables.subList(0, placeables.size - 1).sumOf { (it.height * overlapFactor).toInt() }
     layout(width, height) {
         var yPos = 0
         for (placeable in placeables) {
