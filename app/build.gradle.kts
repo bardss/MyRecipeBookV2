@@ -3,17 +3,16 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("myrecipebook.android.android.jvmversion")
+    id("myrecipebook.android.android.sdk")
+    id("myrecipebook.android.android.compose")
     alias(di.plugins.plugin)
 }
 
 android {
     namespace = "com.jakubaniola.myrecipebook"
-    compileSdk = 33
-
     defaultConfig {
         applicationId  = "com.jakubaniola.myrecipebook"
-        minSdk = 21
-        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -28,19 +27,6 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
     }
     packaging {
         resources {

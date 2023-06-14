@@ -3,41 +3,22 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("myrecipebook.android.library.jvmversion")
+    id("myrecipebook.android.library.sdk")
+    id("myrecipebook.android.library.compose")
     alias(di.plugins.plugin)
 }
 
 android {
     namespace = "com.jakubaniola.recipeslist"
-    compileSdk = 33
 
     defaultConfig {
-        minSdk = 21
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -63,7 +44,6 @@ dependencies {
     implementation(di.android)
     implementation(di.navigation)
     kapt(di.compiler)
-
 
     // Unit Testing
     testImplementation(testlibs.bundles.junit)
