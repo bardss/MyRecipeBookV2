@@ -4,16 +4,19 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,35 +66,47 @@ private fun RecipesListContent(
             .padding(
                 top = paddingValues.calculateTopPadding()
             )
+            .fillMaxWidth()
     ) {
-        RecipeSearchBar {
-        }
         if (uiState is UiState.Success<*> && uiState.state is RecipesListState) {
-            val recipes = (uiState.state as RecipesListState).recipes
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                verticalItemSpacing = 8.dp,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                contentPadding = PaddingValues(
-                    top = 8.dp,
-                    start = 8.dp,
-                    end = 8.dp,
-                    bottom = 120.dp
-                ),
-                content = {
-                    items(recipes) { recipe ->
-                        RecipeGridListItem(
-                            name = recipe.name,
-                            rate = recipe.rateValue,
-                            prepTime = recipe.prepTimeValue,
-                            image = recipe.image,
-                            onGridListItemClick = {}
-                        )
-                    }
-                }
+            RecipeSearchBar { }
+            RecipesGridList(uiState as UiState.Success<RecipesListState>)
+        } else {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(80.dp)
             )
         }
     }
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun RecipesGridList(uiState: UiState.Success<RecipesListState>) {
+    val recipes = uiState.state.recipes
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2),
+        verticalItemSpacing = 8.dp,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(
+            top = 8.dp,
+            start = 8.dp,
+            end = 8.dp,
+            bottom = 120.dp
+        ),
+        content = {
+            items(recipes) { recipe ->
+                RecipeGridListItem(
+                    name = recipe.name,
+                    rate = recipe.rateValue,
+                    prepTime = recipe.prepTimeValue,
+                    image = recipe.image,
+                    onGridListItemClick = {}
+                )
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

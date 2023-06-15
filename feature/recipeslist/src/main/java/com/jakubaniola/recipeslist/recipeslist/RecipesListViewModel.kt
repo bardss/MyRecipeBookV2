@@ -17,7 +17,6 @@ class RecipesListViewModel @Inject constructor(
     private val _recipes: MutableStateFlow<UiState> =
         MutableStateFlow(UiState.Loading)
     val recipes: StateFlow<UiState> = _recipes
-
 }
 
 val placeholderRecipes = RecipesListState(
@@ -29,7 +28,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-" +
-                    "vegetables.jpg"
+                "vegetables.jpg"
         ),
         RecipeItem(
             name = "Picnic food",
@@ -46,7 +45,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://media.cnn.com/api/v1/images/stellar/prod/140430115517-06-" +
-                    "comfort-foods.jpg"
+                "comfort-foods.jpg"
         ),
         RecipeItem(
             name = "Dubai food",
@@ -55,7 +54,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://www.teenaagnel.com/wp-content/uploads/2019/12/food-photography-" +
-                    "in-dubai.jpg"
+                "in-dubai.jpg"
         ),
         RecipeItem(
             name = "Carne asada",
@@ -64,7 +63,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://hips.hearstapps.com/hmg-prod/images/delish-210419-carne-asada-" +
-                    "torta-01-portrait-jg-1620136948.jpg"
+                "torta-01-portrait-jg-1620136948.jpg"
         ),
         RecipeItem(
             name = "Curry",
@@ -73,7 +72,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-" +
-                    "vegetables.jpg"
+                "vegetables.jpg"
         ),
         RecipeItem(
             name = "Fruits",
@@ -82,7 +81,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-" +
-                    "vegetables.jpg"
+                "vegetables.jpg"
         ),
         RecipeItem(
             name = "Picnic food",
@@ -99,7 +98,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://media.cnn.com/api/v1/images/stellar/prod/140430115517-06-" +
-                    "comfort-foods.jpg"
+                "comfort-foods.jpg"
         ),
         RecipeItem(
             name = "Dubai food",
@@ -108,7 +107,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://www.teenaagnel.com/wp-content/uploads/2019/12/food-photography-" +
-                    "in-dubai.jpg"
+                "in-dubai.jpg"
         ),
         RecipeItem(
             name = "Carne asada",
@@ -117,7 +116,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://hips.hearstapps.com/hmg-prod/images/delish-210419-carne-asada-" +
-                    "torta-01-portrait-jg-1620136948.jpg"
+                "torta-01-portrait-jg-1620136948.jpg"
         ),
         RecipeItem(
             name = "Curry",
@@ -126,7 +125,7 @@ val placeholderRecipes = RecipesListState(
             prepTimeResource = R.string.prep_time,
             prepTimeValue = "2h",
             image = "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-" +
-                    "vegetables.jpg"
+                "vegetables.jpg"
         ),
     )
 )
