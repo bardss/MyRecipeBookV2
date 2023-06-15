@@ -1,5 +1,6 @@
 package com.jakubaniola.database.dao
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
@@ -7,6 +8,7 @@ import androidx.room.Update
 import com.jakubaniola.database.entity.RecipeEntity
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface RecipeDao {
     @Query("SELECT * FROM recipeentity")
     fun getAllRecipes(): Flow<List<RecipeEntity>>

@@ -6,7 +6,7 @@ plugins {
     id("myrecipebook.android.library.jvmversion")
     id("myrecipebook.android.library.sdk")
     id("myrecipebook.android.library.compose")
-    alias(di.plugins.plugin)
+    alias(di.plugins.plugin).apply(false)
 }
 
 android {
@@ -30,6 +30,7 @@ dependencies {
     // Modules
     implementation(project(":designsystem"))
     implementation(project(":common"))
+    implementation(project(":datalayer:repository"))
 
     // Libraries
     implementation(androidx.core.ktx)
@@ -41,8 +42,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation(di.android)
-    implementation(di.navigation)
+    implementation(di.bundles.hilt)
     kapt(di.compiler)
 
     // Unit Testing

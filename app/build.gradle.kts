@@ -50,10 +50,8 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation(di.android)
-    implementation(di.navigation)
+    implementation(di.bundles.hilt)
     kapt(di.compiler)
-
 
     // Unit Testing
     testImplementation(testlibs.bundles.junit)

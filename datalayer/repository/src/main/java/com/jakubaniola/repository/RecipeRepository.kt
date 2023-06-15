@@ -5,8 +5,9 @@ import com.jakubaniola.database.entity.toModel
 import com.jakubaniola.model.Recipe
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class RecipeRepository(
+class RecipeRepository @Inject constructor(
     private val recipesDao: RecipeDao
 ) {
 

@@ -4,6 +4,7 @@ buildscript {
 
     dependencies {
         classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.0"
+        classpath "com.squareup:javapoet:1.13.0"
     }
 }
 

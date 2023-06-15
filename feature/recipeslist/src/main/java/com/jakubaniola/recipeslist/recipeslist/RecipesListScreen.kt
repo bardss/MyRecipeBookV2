@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jakubaniola.common.UiState
 import com.jakubaniola.designsystem.components.CircularFloatingActionButton
@@ -31,7 +32,7 @@ import com.jakubaniola.recipeslist.R
 @Composable
 fun RecipesListScreen(
     modifier: Modifier = Modifier,
-    viewModel: RecipesListViewModel = viewModel()
+    viewModel: RecipesListViewModel = hiltViewModel()
 ) {
     val uiState = viewModel.recipes.collectAsState().value
     Scaffold(
@@ -55,7 +56,7 @@ fun RecipesListScreen(
 private fun RecipesListContent(
     modifier: Modifier,
     paddingValues: PaddingValues,
-    uiState: UiState<RecipesListState>
+    uiState: UiState
 ) {
     Column(
         modifier = modifier
@@ -65,8 +66,8 @@ private fun RecipesListContent(
     ) {
         RecipeSearchBar {
         }
-        if (uiState is UiState.Success<RecipesListState>) {
-            val recipes = uiState.state.recipes
+        if (uiState is UiState.Success<*> && uiState.state is RecipesListState) {
+            val recipes = (uiState.state as RecipesListState).recipes
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(2),
                 verticalItemSpacing = 8.dp,
