@@ -42,8 +42,7 @@ dependencies {
 
     // Libraries
     implementation(androidx.core.ktx)
-    implementation(androidx.lifecycle.runtime.ktx)
-    implementation(androidx.activity.compose)
+    implementation(androidx.bundles.compose)
     implementation(platform(external.kotlin.bom))
     implementation(platform(androidx.compose))
     implementation("androidx.compose.material3:material3")

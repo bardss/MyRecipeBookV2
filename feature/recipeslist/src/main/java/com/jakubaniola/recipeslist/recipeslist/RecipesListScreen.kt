@@ -13,15 +13,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jakubaniola.common.UiState
 import com.jakubaniola.designsystem.components.CircularFloatingActionButton
@@ -37,7 +41,7 @@ fun RecipesListScreen(
     modifier: Modifier = Modifier,
     viewModel: RecipesListViewModel = hiltViewModel()
 ) {
-    val uiState = viewModel.recipes.collectAsState().value
+    val uiState = viewModel.recipes.collectAsStateWithLifecycle().value
     Scaffold(
         topBar = {
             TopBar(stringResource(id = R.string.app_name))
@@ -55,7 +59,6 @@ fun RecipesListScreen(
 }
 
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
 private fun RecipesListContent(
     modifier: Modifier,
     paddingValues: PaddingValues,
@@ -63,14 +66,24 @@ private fun RecipesListContent(
 ) {
     Column(
         modifier = modifier
-            .padding(
-                top = paddingValues.calculateTopPadding()
-            )
+            .padding(top = paddingValues.calculateTopPadding())
             .fillMaxWidth()
     ) {
         if (uiState is UiState.Success<*> && uiState.state is RecipesListState) {
-            RecipeSearchBar { }
-            RecipesGridList(uiState as UiState.Success<RecipesListState>)
+            val uiState = uiState as UiState.Success<RecipesListState>
+            if (!uiState.state.isRecipesListEmpty) {
+                RecipeSearchBar { }
+                RecipesGridList(uiState)
+            } else {
+                Text(
+                    text = stringResource(id = R.string.no_recipes),
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(80.dp),
+                    style = MaterialTheme.typography.headlineLarge,
+                    textAlign = TextAlign.Center
+                )
+            }
         } else {
             CircularProgressIndicator(
                 modifier = Modifier
