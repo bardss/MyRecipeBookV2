@@ -25,7 +25,8 @@ dependencyResolutionManagement {
             library("lifecycle-runtime-ktx", "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
             library("activity-compose", "androidx.activity:activity-compose:1.7.2")
             library("lifecycle-runtime-compose", "androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
-            bundle("compose", listOf("lifecycle-runtime-ktx", "activity-compose", "lifecycle-runtime-compose"))
+            library("compose-navigation", "androidx.navigation:navigation-compose:2.5.3")
+            bundle("compose", listOf("lifecycle-runtime-ktx", "activity-compose", "lifecycle-runtime-compose", "compose-navigation"))
             library("compose", "androidx.compose:compose-bom:2022.10.00")
         }
         create("testlibs") {
@@ -56,3 +57,4 @@ include(":common")
 include(":datalayer:repository")
 include(":datalayer:datasource:database")
 include(":model")
+include(":feature:addrecipe")

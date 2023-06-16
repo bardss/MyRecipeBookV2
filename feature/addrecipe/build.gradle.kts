@@ -1,33 +1,24 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
-    id("myrecipebook.android.android.jvmversion")
-    id("myrecipebook.android.android.sdk")
-    id("myrecipebook.android.android.compose")
-    alias(di.plugins.plugin)
+    id("myrecipebook.android.library.jvmversion")
+    id("myrecipebook.android.library.sdk")
+    id("myrecipebook.android.library.compose")
+    alias(di.plugins.plugin).apply(false)
 }
 
 android {
-    namespace = "com.jakubaniola.myrecipebook"
-    defaultConfig {
-        applicationId  = "com.jakubaniola.myrecipebook"
-        versionCode = 1
-        versionName = "1.0"
+    namespace = "com.jakubaniola.recipeslist"
 
+    defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-        }
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -38,8 +29,9 @@ android {
 dependencies {
     // Modules
     implementation(project(":designsystem"))
-    implementation(project(":feature:recipeslist"))
-    implementation(project(":feature:addrecipe"))
+    implementation(project(":common"))
+    implementation(project(":datalayer:repository"))
+    implementation(project(":model"))
 
     // Libraries
     implementation(androidx.core.ktx)

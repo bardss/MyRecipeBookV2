@@ -14,11 +14,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CircularFloatingActionButton(
     icon: ImageVector,
-    contentDescription: String
+    contentDescription: String,
+    onClick: () -> Unit,
 ) {
     FloatingActionButton(
         shape = RoundedCornerShape(70.dp),
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier
             .padding(16.dp)
             .height(70.dp)
