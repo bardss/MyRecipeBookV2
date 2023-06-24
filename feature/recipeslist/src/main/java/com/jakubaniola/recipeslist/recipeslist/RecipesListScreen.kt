@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,8 +19,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.jakubaniola.common.UiState
 import com.jakubaniola.designsystem.components.ListEmptyState
+import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.RecipeGridListItem
 import com.jakubaniola.designsystem.components.RecipeSearchBar
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
@@ -26,20 +28,35 @@ import com.jakubaniola.recipeslist.R
 
 @Composable
 fun RecipesListScreen(
+    navigateToAddRecipe: () -> Unit,
+    viewModel: RecipesListViewModel = hiltViewModel(),
+) {
+    MrbScaffold(
+        topBarTitle = R.string.app_name,
+        fabIcon = Icons.Default.Add,
+        fabContentDescription = "Add new recipe button",
+        onFabClick = navigateToAddRecipe,
+        content = {
+            RecipesListContent(it, viewModel)
+        }
+    )
+}
+
+@Composable
+fun RecipesListContent(
     paddingValues: PaddingValues,
-    viewModel: RecipesListViewModel = hiltViewModel()
+    viewModel: RecipesListViewModel
 ) {
     Column(
         modifier = Modifier
             .padding(top = paddingValues.calculateTopPadding())
             .fillMaxWidth()
     ) {
-        val uiState = viewModel.recipes.collectAsStateWithLifecycle().value
-        if (uiState is UiState.Success<*> && uiState.state is RecipesListState) {
-            val uiState = uiState as UiState.Success<RecipesListState>
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+        if (uiState is UiState.Success) {
             if (!uiState.state.isRecipesListEmpty) {
                 RecipeSearchBar { }
-                RecipesGridList(uiState)
+                RecipesGridList(uiState.state.recipes)
             } else {
                 ListEmptyState(
                     modifier = Modifier
@@ -59,8 +76,7 @@ fun RecipesListScreen(
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-private fun RecipesGridList(uiState: UiState.Success<RecipesListState>) {
-    val recipes = uiState.state.recipes
+private fun RecipesGridList(recipes: List<RecipeItem>) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
         verticalItemSpacing = 8.dp,
@@ -89,8 +105,6 @@ private fun RecipesGridList(uiState: UiState.Success<RecipesListState>) {
 @Composable
 fun RecipesListContentPreview() {
     MyRecipeBookTheme {
-        RecipesListScreen(
-            PaddingValues(0.dp)
-        )
+        RecipesListScreen({})
     }
 }

@@ -1,32 +1,30 @@
 package com.jakubaniola.myrecipebook
 
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.jakubaniola.addrecipe.navigation.graphAddRecipes
 import com.jakubaniola.addrecipe.navigation.navigateToAddRecipes
-import com.jakubaniola.designsystem.components.CircularFloatingActionButton
-import com.jakubaniola.designsystem.components.TopBar
-import com.jakubaniola.recipeslist.R
+import com.jakubaniola.recipeslist.recipeslist.navigation.ROUTE_RECIPES_LIST
+import com.jakubaniola.recipeslist.recipeslist.navigation.graphRecipesListScreen
 
 @ExperimentalMaterial3Api
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    Scaffold(
-        topBar = {
-            TopBar(stringResource(id = R.string.app_name))
-        },
-        floatingActionButton = {
-            Fab(navController)
-        },
-        content = { paddingValues ->
-            MrbNavHost(
-                paddingValues,
-                navController
-            )
-        },
-    )
+    navController.currentBackStackEntryAsState().value
+
+    NavHost(
+        navController = navController,
+        startDestination = ROUTE_RECIPES_LIST
+    ) {
+        graphRecipesListScreen {
+            navController.navigateToAddRecipes()
+        }
+        graphAddRecipes {
+            navController.popBackStack()
+        }
+    }
 }

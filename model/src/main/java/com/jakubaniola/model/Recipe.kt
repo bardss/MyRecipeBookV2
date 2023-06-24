@@ -4,7 +4,7 @@ data class Recipe(
     val id: Int? = null,
     val name: String,
     val timeToPrepare: String,
-    val rate: Int,
+    val rate: String,
     val resultPhotoPath: String,
     val urlToRecipe: String,
     val ingredients: String,

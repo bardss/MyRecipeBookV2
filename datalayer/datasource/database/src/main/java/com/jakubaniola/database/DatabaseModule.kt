@@ -21,5 +21,7 @@ object DatabaseModule {
         context,
         MrbDatabase::class.java,
         "mrb-database",
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .build()
 }

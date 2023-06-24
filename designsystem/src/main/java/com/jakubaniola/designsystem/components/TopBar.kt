@@ -30,7 +30,7 @@ fun TopBar(topBarText: String) {
             painter = painterResource(id = R.drawable.app_logo),
             contentDescription = "App Logo",
             modifier = Modifier
-                .padding(8.dp, 4.dp)
+                .padding(12.dp, 8.dp)
         )
         Text(
             text = topBarText,

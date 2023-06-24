@@ -10,7 +10,7 @@ data class RecipeEntity(
     val id: Int? = null,
     val name: String,
     val timeToPrepare: String,
-    val rate: Int,
+    val rate: String,
     val resultPhotoPath: String,
     val urlToRecipe: String,
     val ingredients: String,
@@ -18,6 +18,18 @@ data class RecipeEntity(
 )
 
 fun RecipeEntity.toModel() = Recipe(
+    id = id,
+    name = name,
+    timeToPrepare = timeToPrepare,
+    rate = rate,
+    resultPhotoPath = resultPhotoPath,
+    urlToRecipe = urlToRecipe,
+    ingredients = ingredients,
+    recipe = recipe
+)
+
+
+fun Recipe.toEntity() = RecipeEntity(
     id = id,
     name = name,
     timeToPrepare = timeToPrepare,
