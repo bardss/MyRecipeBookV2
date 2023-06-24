@@ -1,11 +1,14 @@
 package com.jakubaniola.designsystem.components
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import com.jakubaniola.common.FieldValue
 
 @ExperimentalMaterial3Api
@@ -14,6 +17,7 @@ fun FormField(
     fieldValue: FieldValue,
     labelStringId: Int,
     maxLines: Int = 1,
+    keyboardType: KeyboardType = KeyboardType.Text,
     modifier: Modifier,
     onValueChange: (String) -> Unit
 ) {
@@ -28,6 +32,10 @@ fun FormField(
             if (fieldValue.isError()) {
                 Text(text = stringResource(id = fieldValue.validationResult.errorTextId))
             }
-        }
+        },
+        keyboardOptions = KeyboardOptions(
+            imeAction = if (maxLines == 1) ImeAction.Done else ImeAction.Default,
+            keyboardType = keyboardType
+        )
     )
 }

@@ -3,7 +3,9 @@ package com.jakubaniola.addrecipe
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jakubaniola.common.validateAndCopy
+import com.jakubaniola.common.validation.ValidationResult
 import com.jakubaniola.common.validation.ValidationType
+import com.jakubaniola.common.validation.validate
 import com.jakubaniola.model.Recipe
 import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,11 +59,21 @@ class AddRecipeViewModel @Inject constructor(
         viewModelScope.launch {
             val value = _uiState.value
             if (value is UiState.Adding) {
-                val updatedValue = update(value.state)
-                _uiState.value = UiState.Adding(updatedValue)
+                val updatedState = update(value.state)
+                val updatedStateWithValidation = updatedState.copy(
+                    isSaveEnabled = isRecipeDataValidToSave(updatedState)
+                )
+                _uiState.value = UiState.Adding(updatedStateWithValidation)
             }
         }
     }
+
+    private fun isRecipeDataValidToSave(state: AddRecipeState): Boolean =
+        listOf(
+            validate(state.name.value, ValidationType.EMPTY),
+            validate(state.prepTime.value, ValidationType.EMPTY),
+            validate(state.rate.value, ValidationType.EMPTY, ValidationType.NUMBER),
+        ).all { it == ValidationResult.VALID }
 
     fun onSaveClick() {
         viewModelScope.launch {

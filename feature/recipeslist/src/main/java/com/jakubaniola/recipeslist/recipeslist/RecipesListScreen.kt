@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +26,7 @@ import com.jakubaniola.designsystem.components.RecipeGridListItem
 import com.jakubaniola.designsystem.components.RecipeSearchBar
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 import com.jakubaniola.common.R
+import com.jakubaniola.designsystem.components.FabState
 
 @Composable
 fun RecipesListScreen(
@@ -33,9 +35,11 @@ fun RecipesListScreen(
 ) {
     MrbScaffold(
         topBarTitle = R.string.app_name,
-        fabIcon = Icons.Default.Add,
-        fabContentDescription = "Add new recipe button",
-        onFabClick = navigateToAddRecipe,
+        fabState = FabState(
+            icon = Icons.Default.Add,
+            contentDescription = "Add new recipe button",
+            onClick = navigateToAddRecipe,
+        ),
         content = {
             RecipesListContent(it, viewModel)
         }

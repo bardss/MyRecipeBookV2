@@ -10,10 +10,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
+import com.jakubaniola.designsystem.components.FabState
 import com.jakubaniola.designsystem.components.FormField
 import com.jakubaniola.designsystem.components.MrbScaffold
 
@@ -22,11 +24,17 @@ fun AddRecipeScreen(
     onAddSuccess: () -> Unit,
     viewModel: AddRecipeViewModel = hiltViewModel(),
 ) {
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    val isFabEnabled = if (uiState is UiState.Adding) uiState.state.isSaveEnabled else false
+
     MrbScaffold(
         topBarTitle = R.string.add_recipe,
-        fabIcon = Icons.Default.Check,
-        fabContentDescription = "Save recipe button",
-        onFabClick = viewModel::onSaveClick,
+        fabState = FabState(
+            icon = Icons.Default.Check,
+            contentDescription = "Save recipe button",
+            isEnabled = isFabEnabled,
+            onClick = viewModel::onSaveClick,
+        ),
         content = {
             AddRecipeContent(
                 it,
@@ -117,7 +125,8 @@ private fun AddRecipeForm(
                     .padding(
                         start = spacing
                     ),
-                onValueChange = onRateChange
+                onValueChange = onRateChange,
+                keyboardType = KeyboardType.Number
             )
         }
         FormField(

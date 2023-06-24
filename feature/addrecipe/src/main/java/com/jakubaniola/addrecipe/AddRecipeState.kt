@@ -8,4 +8,5 @@ data class AddRecipeState(
     val rate: FieldValue = FieldValue(""),
     val recipe: FieldValue = FieldValue(""),
     val linkToRecipe: FieldValue = FieldValue(""),
+    val isSaveEnabled: Boolean = false
 )
