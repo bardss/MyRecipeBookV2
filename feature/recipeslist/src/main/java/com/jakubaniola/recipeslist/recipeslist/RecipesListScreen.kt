@@ -31,6 +31,7 @@ import com.jakubaniola.designsystem.components.FabState
 @Composable
 fun RecipesListScreen(
     navigateToAddRecipe: () -> Unit,
+    navigateToRecipeDetails: (Int) -> Unit,
     viewModel: RecipesListViewModel = hiltViewModel(),
 ) {
     MrbScaffold(
@@ -41,7 +42,11 @@ fun RecipesListScreen(
             onClick = navigateToAddRecipe,
         ),
         content = {
-            RecipesListContent(it, viewModel)
+            RecipesListContent(
+                it,
+                navigateToRecipeDetails,
+                viewModel
+            )
         }
     )
 }
@@ -49,6 +54,7 @@ fun RecipesListScreen(
 @Composable
 fun RecipesListContent(
     paddingValues: PaddingValues,
+    navigateToRecipeDetails: (Int) -> Unit,
     viewModel: RecipesListViewModel
 ) {
     Column(
@@ -60,7 +66,10 @@ fun RecipesListContent(
         if (uiState is UiState.Success) {
             if (!uiState.state.isRecipesListEmpty) {
                 RecipeSearchBar { }
-                RecipesGridList(uiState.state.recipes)
+                RecipesGridList(
+                    uiState.state.recipes,
+                    navigateToRecipeDetails
+                )
             } else {
                 ListEmptyState(
                     modifier = Modifier
@@ -80,7 +89,10 @@ fun RecipesListContent(
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
-private fun RecipesGridList(recipes: List<RecipeItem>) {
+private fun RecipesGridList(
+    recipes: List<RecipeItem>,
+    navigateToRecipeDetails: (Int) -> Unit,
+) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
         verticalItemSpacing = 8.dp,
@@ -98,7 +110,9 @@ private fun RecipesGridList(recipes: List<RecipeItem>) {
                     rate = recipe.rateValue,
                     prepTime = recipe.prepTimeValue,
                     image = recipe.image,
-                    onGridListItemClick = {}
+                    onGridListItemClick = {
+                        navigateToRecipeDetails(recipe.id)
+                    }
                 )
             }
         }
@@ -109,6 +123,8 @@ private fun RecipesGridList(recipes: List<RecipeItem>) {
 @Composable
 fun RecipesListContentPreview() {
     MyRecipeBookTheme {
-        RecipesListScreen({})
+        RecipesListScreen(
+            {}, {}
+        )
     }
 }

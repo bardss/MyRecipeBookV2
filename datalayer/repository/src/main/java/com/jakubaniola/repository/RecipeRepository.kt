@@ -13,9 +13,11 @@ class RecipeRepository @Inject constructor(
 
     fun getRecipes() =
         recipesDao.getAllRecipes()
-            .map { recipes ->
-                recipes.map { recipe -> recipe.toModel() }
-            }
+            .map { recipes -> recipes.map { recipe -> recipe.toModel() } }
+
+    fun getRecipe(recipeId: Int) =
+        recipesDao.getRecipe(recipeId)
+            .map { recipe -> recipe.toModel() }
 
     suspend fun saveRecipe(recipe: Recipe) =
         recipesDao.addRecipe(recipe.toEntity())

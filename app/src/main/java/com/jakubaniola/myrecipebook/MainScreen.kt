@@ -7,6 +7,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jakubaniola.addrecipe.navigation.graphAddRecipes
 import com.jakubaniola.addrecipe.navigation.navigateToAddRecipes
+import com.jakubaniola.recipedetails.navigation.graphRecipeDetails
+import com.jakubaniola.recipedetails.navigation.navigateToRecipeDetails
 import com.jakubaniola.recipeslist.recipeslist.navigation.ROUTE_RECIPES_LIST
 import com.jakubaniola.recipeslist.recipeslist.navigation.graphRecipesListScreen
 
@@ -20,11 +22,13 @@ fun MainScreen() {
         navController = navController,
         startDestination = ROUTE_RECIPES_LIST
     ) {
-        graphRecipesListScreen {
-            navController.navigateToAddRecipes()
-        }
+        graphRecipesListScreen(
+            navigateToAddRecipe = { navController.navigateToAddRecipes() },
+            navigateToRecipeDetails = { navController.navigateToRecipeDetails(it) }
+        )
         graphAddRecipes {
             navController.popBackStack()
         }
+        graphRecipeDetails()
     }
 }

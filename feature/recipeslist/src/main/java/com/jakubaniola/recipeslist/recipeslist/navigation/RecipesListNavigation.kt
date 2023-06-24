@@ -7,9 +7,13 @@ import com.jakubaniola.recipeslist.recipeslist.RecipesListScreen
 const val ROUTE_RECIPES_LIST = "route_recipes_list"
 
 fun NavGraphBuilder.graphRecipesListScreen(
-    navigateToAddRecipe: () -> Unit
+    navigateToAddRecipe: () -> Unit,
+    navigateToRecipeDetails: (Int) -> Unit
 ) {
     composable(route = ROUTE_RECIPES_LIST) {
-        RecipesListScreen(navigateToAddRecipe)
+        RecipesListScreen(
+            navigateToAddRecipe = navigateToAddRecipe,
+            navigateToRecipeDetails = navigateToRecipeDetails,
+        )
     }
 }

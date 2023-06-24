@@ -49,7 +49,7 @@ fun AddRecipeScreen(
 fun AddRecipeContent(
     paddingValues: PaddingValues,
     viewModel: AddRecipeViewModel,
-    onAddSuccess: () -> Unit
+    onAddSuccess: () -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     when (uiState) {

@@ -10,6 +10,7 @@ data class RecipesListState(
 )
 
 data class RecipeItem(
+    val id: Int,
     val name: String,
     val rateResource: Int,
     val rateValue: String,
@@ -19,6 +20,7 @@ data class RecipeItem(
 )
 
 fun Recipe.toItem() = RecipeItem(
+    id = id ?: 0,
     name = name,
     rateResource = R.string.rate_with_colon,
     rateValue = rate,
