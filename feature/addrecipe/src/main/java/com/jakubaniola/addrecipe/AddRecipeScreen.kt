@@ -8,16 +8,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jakubaniola.common.R
+import com.jakubaniola.designsystem.components.FormField
 import com.jakubaniola.designsystem.components.MrbScaffold
-import com.jakubaniola.recipeslist.R
 
 @Composable
 fun AddRecipeScreen(
@@ -31,7 +29,9 @@ fun AddRecipeScreen(
         onFabClick = viewModel::onSaveClick,
         content = {
             AddRecipeContent(
-                it, viewModel, onAddSuccess
+                it,
+                viewModel,
+                onAddSuccess
             )
         }
     )
@@ -56,6 +56,7 @@ fun AddRecipeContent(
                 uiState = uiState.state
             )
         }
+
         is UiState.OnAddSuccess -> onAddSuccess()
     }
 }
@@ -87,54 +88,49 @@ private fun AddRecipeForm(
                 vertical = verticalPadding
             )
 
-        OutlinedTextField(
+        FormField(
+            fieldValue = uiState.name,
+            labelStringId = R.string.name,
             modifier = rowModifier,
-            value = uiState.name,
-            onValueChange = onNameChange,
-            label = { Text(text = stringResource(id = R.string.name)) },
-            maxLines = 1
+            onValueChange = onNameChange
         )
 
         Row(
             modifier = rowModifier
         ) {
             val spacing = 8.dp
-            OutlinedTextField(
+            FormField(
+                fieldValue = uiState.prepTime,
+                labelStringId = R.string.prep_time,
                 modifier = Modifier
                     .weight(1f)
                     .padding(
                         end = spacing
                     ),
-                value = uiState.prepTime,
-                onValueChange = onPrepTimeChange,
-                label = { Text(text = stringResource(id = R.string.prep_time)) },
-                maxLines = 1
+                onValueChange = onPrepTimeChange
             )
-            OutlinedTextField(
+            FormField(
+                fieldValue = uiState.rate,
+                labelStringId = R.string.rate_out_of_10,
                 modifier = Modifier
                     .weight(1f)
                     .padding(
                         start = spacing
                     ),
-                value = uiState.rate,
-                onValueChange = onRateChange,
-                label = { Text(text = stringResource(id = R.string.rate)) },
-                maxLines = 1
+                onValueChange = onRateChange
             )
         }
-
-        OutlinedTextField(
+        FormField(
+            fieldValue = uiState.recipe,
+            labelStringId = R.string.recipe,
             modifier = rowModifier,
-            value = uiState.recipe,
-            onValueChange = onRecipeChange,
-            label = { Text(text = stringResource(id = R.string.recipe)) },
+            onValueChange = onRecipeChange
         )
-
-        OutlinedTextField(
+        FormField(
+            fieldValue = uiState.linkToRecipe,
+            labelStringId = R.string.link_to_recipe,
             modifier = rowModifier,
-            value = uiState.linkToRecipe,
-            onValueChange = onLinkToRecipeChange,
-            label = { Text(text = stringResource(id = R.string.link_to_recipe)) },
+            onValueChange = onLinkToRecipeChange
         )
     }
 }

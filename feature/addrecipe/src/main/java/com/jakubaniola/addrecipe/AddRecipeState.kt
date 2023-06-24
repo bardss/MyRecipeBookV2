@@ -1,9 +1,11 @@
 package com.jakubaniola.addrecipe
 
+import com.jakubaniola.common.FieldValue
+
 data class AddRecipeState(
-    val name: String = "",
-    val prepTime: String = "",
-    val rate: String = "",
-    val recipe: String = "",
-    val linkToRecipe: String = "",
+    val name: FieldValue = FieldValue(""),
+    val prepTime: FieldValue = FieldValue(""),
+    val rate: FieldValue = FieldValue(""),
+    val recipe: FieldValue = FieldValue(""),
+    val linkToRecipe: FieldValue = FieldValue(""),
 )

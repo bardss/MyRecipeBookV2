@@ -28,7 +28,6 @@ fun RecipeEntity.toModel() = Recipe(
     recipe = recipe
 )
 
-
 fun Recipe.toEntity() = RecipeEntity(
     id = id,
     name = name,

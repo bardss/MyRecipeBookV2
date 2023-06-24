@@ -2,6 +2,8 @@ package com.jakubaniola.addrecipe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jakubaniola.common.validateAndCopy
+import com.jakubaniola.common.validation.ValidationType
 import com.jakubaniola.model.Recipe
 import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,31 +23,31 @@ class AddRecipeViewModel @Inject constructor(
 
     fun onNameChange(name: String) {
         updateAddingState {
-            it.copy(name = name)
+            it.copy(name = validateAndCopy(name, ValidationType.EMPTY))
         }
     }
 
     fun onPrepTimeChange(prepTime: String) {
         updateAddingState {
-            it.copy(prepTime = prepTime)
+            it.copy(prepTime = validateAndCopy(prepTime, ValidationType.EMPTY))
         }
     }
 
     fun onRateChange(rate: String) {
         updateAddingState {
-            it.copy(rate = rate)
+            it.copy(rate = validateAndCopy(rate, ValidationType.EMPTY, ValidationType.NUMBER))
         }
     }
 
     fun onRecipeChange(recipe: String) {
         updateAddingState {
-            it.copy(recipe = recipe)
+            it.copy(recipe = validateAndCopy(recipe))
         }
     }
 
     fun onLinkToRecipeChange(linkToRecipe: String) {
         updateAddingState {
-            it.copy(linkToRecipe = linkToRecipe)
+            it.copy(linkToRecipe = validateAndCopy(linkToRecipe))
         }
     }
 
@@ -67,11 +69,11 @@ class AddRecipeViewModel @Inject constructor(
             if (value is UiState.Adding) {
                 val state = value.state
                 val recipe = Recipe(
-                    name = state.name,
-                    timeToPrepare = state.prepTime,
-                    rate = state.rate,
-                    urlToRecipe = state.linkToRecipe,
-                    recipe = state.recipe,
+                    name = state.name.value,
+                    timeToPrepare = state.prepTime.value,
+                    rate = state.rate.value,
+                    urlToRecipe = state.linkToRecipe.value,
+                    recipe = state.recipe.value,
                     ingredients = "",
                     resultPhotoPath = ""
                 )

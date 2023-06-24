@@ -24,7 +24,7 @@ import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.RecipeGridListItem
 import com.jakubaniola.designsystem.components.RecipeSearchBar
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
-import com.jakubaniola.recipeslist.R
+import com.jakubaniola.common.R
 
 @Composable
 fun RecipesListScreen(

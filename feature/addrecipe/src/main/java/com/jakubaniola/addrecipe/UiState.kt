@@ -4,5 +4,5 @@ sealed class UiState {
     data class Adding(
         val state: AddRecipeState
     ) : UiState()
-    object OnAddSuccess: UiState()
+    object OnAddSuccess : UiState()
 }

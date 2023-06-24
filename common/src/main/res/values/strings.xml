@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MyRecipeBook</string>
+    <string name="rate_with_colon">Rate:</string>
+    <string name="prep_time_with_colon">Prep. time:</string>
+    <string name="no_recipes">No recipes saved.\nClick + and add your first recipe!</string>
+    <string name="add_recipe">Add recipe</string>
+    <string name="name">Name</string>
+    <string name="prep_time">Prep. time</string>
+    <string name="rate_out_of_10">Rate (out of 10)</string>
+    <string name="recipe">Recipe</string>
+    <string name="link_to_recipe">Link to recipe</string>
+    <string name="invalid_value">Invalid value</string>
+    <string name="invalid_empty">Field cannot be empty</string>
+    <string name="invalid_must_be_number">Value must be a digit</string>
+    <string name="empty"> </string>
+</resources>

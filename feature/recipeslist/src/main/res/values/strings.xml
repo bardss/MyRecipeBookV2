@@ -1,7 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MyRecipeBook</string>
-    <string name="rate">Rate:</string>
-    <string name="prep_time">Prep. time:</string>
-    <string name="no_recipes">No recipes saved.\nClick + and add your first recipe!</string>
 </resources>

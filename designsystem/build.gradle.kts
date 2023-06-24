@@ -11,6 +11,9 @@ android {
 }
 
 dependencies {
+    // Modules
+    implementation(project(":common"))
+
     // Libraries
     implementation(androidx.core.ktx)
     implementation(androidx.lifecycle.runtime.ktx)
