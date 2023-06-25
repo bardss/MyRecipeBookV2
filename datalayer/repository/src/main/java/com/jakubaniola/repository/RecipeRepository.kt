@@ -4,6 +4,7 @@ import com.jakubaniola.database.dao.RecipeDao
 import com.jakubaniola.database.entity.toEntity
 import com.jakubaniola.database.entity.toModel
 import com.jakubaniola.model.Recipe
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -18,6 +19,10 @@ class RecipeRepository @Inject constructor(
     fun getRecipe(recipeId: Int) =
         recipesDao.getRecipe(recipeId)
             .map { recipe -> recipe.toModel() }
+            .catch { }
+
+    suspend fun removeRecipe(recipeId: Int) =
+        recipesDao.deleteRecipe(recipeId)
 
     suspend fun setRecipe(recipe: Recipe) =
         recipesDao.setRecipe(recipe.toEntity())

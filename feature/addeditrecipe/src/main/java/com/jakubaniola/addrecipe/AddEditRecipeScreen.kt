@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
-import com.jakubaniola.designsystem.components.FabState
 import com.jakubaniola.designsystem.components.FormField
 import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.fab.FabState
@@ -32,11 +31,13 @@ fun AddEditRecipeScreen(
 
     MrbScaffold(
         topBarTitle = R.string.add_recipe,
-        fabState = FabState(
-            icon = Icons.Default.Check,
-            contentDescription = "Save recipe button",
-            isEnabled = isFabEnabled,
-            onClick = viewModel::onSaveClick,
+        fabStates = listOf(
+            FabState(
+                icon = Icons.Default.Check,
+                contentDescription = "Save recipe button",
+                isEnabled = isFabEnabled,
+                onClick = viewModel::onSaveClick,
+            )
         ),
         content = {
             AddEditRecipeContent(

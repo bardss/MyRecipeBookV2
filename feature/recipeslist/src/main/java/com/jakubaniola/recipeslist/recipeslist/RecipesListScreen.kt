@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
-import com.jakubaniola.designsystem.components.FabState
 import com.jakubaniola.designsystem.components.ListEmptyState
 import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.RecipeGridListItem
 import com.jakubaniola.designsystem.components.RecipeSearchBar
+import com.jakubaniola.designsystem.components.fab.FabState
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 
 @Composable
@@ -35,10 +35,12 @@ fun RecipesListScreen(
 ) {
     MrbScaffold(
         topBarTitle = R.string.app_name,
-        fabState = FabState(
-            icon = Icons.Default.Add,
-            contentDescription = "Add new recipe button",
-            onClick = navigateToAddRecipe,
+        fabStates = listOf(
+            FabState(
+                icon = Icons.Default.Add,
+                contentDescription = "Add new recipe button",
+                onClick = navigateToAddRecipe,
+            )
         ),
         content = {
             RecipesListContent(

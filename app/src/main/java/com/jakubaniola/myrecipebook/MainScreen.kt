@@ -31,7 +31,8 @@ fun MainScreen() {
             navController.popBackStack()
         }
         graphRecipeDetails(
-            navigateToEditRecipe = { navController.navigateToEditRecipes(it) }
+            navigateToEditRecipe = { navController.navigateToEditRecipes(it) },
+            navigateBack = { navController.popBackStack() }
         )
     }
 }

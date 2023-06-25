@@ -14,4 +14,8 @@
     <string name="invalid_empty">Field cannot be empty</string>
     <string name="invalid_must_be_number">Value must be a digit</string>
     <string name="empty"> </string>
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure_you_want_to_remove_recipe">Are you sure you want to remove this recipe?</string>
+
 </resources>

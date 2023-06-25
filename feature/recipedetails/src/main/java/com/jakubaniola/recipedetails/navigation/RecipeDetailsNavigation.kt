@@ -17,7 +17,8 @@ fun NavController.navigateToRecipeDetails(recipeId: Int) {
 }
 
 fun NavGraphBuilder.graphRecipeDetails(
-    navigateToEditRecipe: (Int) -> Unit
+    navigateToEditRecipe: (Int) -> Unit,
+    navigateBack: () -> Unit
 ) {
     composable(
         route = "$ROUTE_RECIPE_DETAIL/{$ARG_RECIPE_ID}",
@@ -27,6 +28,9 @@ fun NavGraphBuilder.graphRecipeDetails(
             }
         )
     ) {
-        RecipeDetailsScreen(navigateToEditRecipe)
+        RecipeDetailsScreen(
+            navigateToEditRecipe = navigateToEditRecipe,
+            navigateBack = navigateBack
+        )
     }
 }

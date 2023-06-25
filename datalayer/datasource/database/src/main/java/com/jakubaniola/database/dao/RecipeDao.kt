@@ -1,7 +1,6 @@
 package com.jakubaniola.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,6 +18,6 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setRecipe(recipe: RecipeEntity)
 
-    @Delete
-    suspend fun deleteRecipe(recipe: RecipeEntity)
+    @Query("DELETE FROM recipeentity WHERE id IS :recipeId")
+    suspend fun deleteRecipe(recipeId: Int)
 }
