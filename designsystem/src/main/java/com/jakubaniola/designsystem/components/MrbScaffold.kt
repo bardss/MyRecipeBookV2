@@ -5,6 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.jakubaniola.designsystem.components.fab.CircularFloatingActionButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

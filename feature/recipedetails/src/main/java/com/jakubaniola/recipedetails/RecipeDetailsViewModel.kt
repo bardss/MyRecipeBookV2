@@ -18,7 +18,7 @@ class RecipeDetailsViewModel @Inject constructor(
     recipeRepository: RecipeRepository
 ) : ViewModel() {
 
-    private val recipeId: Int = checkNotNull(savedStateHandle[ARG_RECIPE_ID])
+    val recipeId: Int = checkNotNull(savedStateHandle[ARG_RECIPE_ID])
 
     private val _uiState = recipeRepository.getRecipe(recipeId)
         .map { recipe ->

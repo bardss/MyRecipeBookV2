@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.jakubaniola.recipeslist"
+    namespace = "com.jakubaniola.addeditrecipe"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

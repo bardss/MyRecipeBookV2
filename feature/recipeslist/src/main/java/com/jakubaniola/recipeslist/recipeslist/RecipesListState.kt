@@ -1,7 +1,7 @@
 package com.jakubaniola.recipeslist.recipeslist
 
-import com.jakubaniola.model.Recipe
 import com.jakubaniola.common.R
+import com.jakubaniola.model.Recipe
 
 data class RecipesListState(
     val recipes: List<RecipeItem>,

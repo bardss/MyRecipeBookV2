@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -18,14 +20,15 @@ import com.jakubaniola.common.R
 import com.jakubaniola.designsystem.components.FabState
 import com.jakubaniola.designsystem.components.FormField
 import com.jakubaniola.designsystem.components.MrbScaffold
+import com.jakubaniola.designsystem.components.fab.FabState
 
 @Composable
-fun AddRecipeScreen(
+fun AddEditRecipeScreen(
     onAddSuccess: () -> Unit,
-    viewModel: AddRecipeViewModel = hiltViewModel(),
+    viewModel: AddEditRecipeViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    val isFabEnabled = if (uiState is UiState.Adding) uiState.state.isSaveEnabled else false
+    val isFabEnabled = if (uiState is UiState.AddEdit) uiState.state.isSaveEnabled else false
 
     MrbScaffold(
         topBarTitle = R.string.add_recipe,
@@ -36,7 +39,7 @@ fun AddRecipeScreen(
             onClick = viewModel::onSaveClick,
         ),
         content = {
-            AddRecipeContent(
+            AddEditRecipeContent(
                 it,
                 viewModel,
                 onAddSuccess
@@ -46,15 +49,16 @@ fun AddRecipeScreen(
 }
 
 @Composable
-fun AddRecipeContent(
+fun AddEditRecipeContent(
     paddingValues: PaddingValues,
-    viewModel: AddRecipeViewModel,
+    viewModel: AddEditRecipeViewModel,
     onAddSuccess: () -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+
     when (uiState) {
-        is UiState.Adding -> {
-            AddRecipeForm(
+        is UiState.AddEdit -> {
+            AddEditRecipeForm(
                 paddingValues = paddingValues,
                 onNameChange = viewModel::onNameChange,
                 onPrepTimeChange = viewModel::onPrepTimeChange,
@@ -65,29 +69,34 @@ fun AddRecipeContent(
             )
         }
 
-        is UiState.OnAddSuccess -> onAddSuccess()
+        is UiState.OnSaveSuccess -> onAddSuccess()
+        is UiState.Loading -> Column {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(80.dp)
+            )
+        }
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun AddRecipeForm(
+private fun AddEditRecipeForm(
     paddingValues: PaddingValues,
     onNameChange: (String) -> Unit,
     onPrepTimeChange: (String) -> Unit,
     onRateChange: (String) -> Unit,
     onRecipeChange: (String) -> Unit,
     onLinkToRecipeChange: (String) -> Unit,
-    uiState: AddRecipeState
+    uiState: AddEditRecipeState
 ) {
     val horizontalPadding = 16.dp
     val verticalPadding = 4.dp
 
     Column(
         modifier = Modifier
-            .padding(
-                paddingValues
-            )
+            .padding(paddingValues)
     ) {
         val rowModifier = Modifier
             .fillMaxWidth()

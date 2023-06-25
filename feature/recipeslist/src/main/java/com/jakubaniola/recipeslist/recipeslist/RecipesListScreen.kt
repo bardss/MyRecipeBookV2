@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,13 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jakubaniola.common.R
+import com.jakubaniola.designsystem.components.FabState
 import com.jakubaniola.designsystem.components.ListEmptyState
 import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.RecipeGridListItem
 import com.jakubaniola.designsystem.components.RecipeSearchBar
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
-import com.jakubaniola.common.R
-import com.jakubaniola.designsystem.components.FabState
 
 @Composable
 fun RecipesListScreen(
@@ -124,7 +123,8 @@ private fun RecipesGridList(
 fun RecipesListContentPreview() {
     MyRecipeBookTheme {
         RecipesListScreen(
-            {}, {}
+            {},
+            {}
         )
     }
 }

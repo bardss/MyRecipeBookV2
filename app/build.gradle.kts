@@ -39,7 +39,7 @@ dependencies {
     // Modules
     implementation(project(":designsystem"))
     implementation(project(":feature:recipeslist"))
-    implementation(project(":feature:addrecipe"))
+    implementation(project(":feature:addeditrecipe"))
     implementation(project(":feature:recipedetails"))
 
     // Libraries

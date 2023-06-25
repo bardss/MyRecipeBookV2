@@ -1,7 +1,10 @@
 package com.jakubaniola.addrecipe
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jakubaniola.addrecipe.navigation.ARG_RECIPE_ID
+import com.jakubaniola.common.INVALID_ID
 import com.jakubaniola.common.validateAndCopy
 import com.jakubaniola.common.validation.ValidationResult
 import com.jakubaniola.common.validation.ValidationType
@@ -11,17 +14,32 @@ import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddRecipeViewModel @Inject constructor(
+class AddEditRecipeViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val recipeRepository: RecipeRepository
 ) : ViewModel() {
-    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
-        UiState.Adding(AddRecipeState())
-    )
+
+    private val recipeId: Int = checkNotNull(savedStateHandle[ARG_RECIPE_ID])
+
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
+
+    init {
+        viewModelScope.launch {
+            recipeRepository.getRecipe(recipeId)
+                .map { it.toAddEditRecipe() }
+                .catch { emit(AddEditRecipeState()) }
+                .collect {
+                    _uiState.value = UiState.AddEdit(it)
+                }
+        }
+    }
 
     fun onNameChange(name: String) {
         updateAddingState {
@@ -54,21 +72,21 @@ class AddRecipeViewModel @Inject constructor(
     }
 
     private fun updateAddingState(
-        update: (AddRecipeState) -> AddRecipeState
+        update: (AddEditRecipeState) -> AddEditRecipeState
     ) {
         viewModelScope.launch {
             val value = _uiState.value
-            if (value is UiState.Adding) {
+            if (value is UiState.AddEdit) {
                 val updatedState = update(value.state)
                 val updatedStateWithValidation = updatedState.copy(
                     isSaveEnabled = isRecipeDataValidToSave(updatedState)
                 )
-                _uiState.value = UiState.Adding(updatedStateWithValidation)
+                _uiState.value = UiState.AddEdit(updatedStateWithValidation)
             }
         }
     }
 
-    private fun isRecipeDataValidToSave(state: AddRecipeState): Boolean =
+    private fun isRecipeDataValidToSave(state: AddEditRecipeState): Boolean =
         listOf(
             validate(state.name.value, ValidationType.EMPTY),
             validate(state.prepTime.value, ValidationType.EMPTY),
@@ -78,7 +96,7 @@ class AddRecipeViewModel @Inject constructor(
     fun onSaveClick() {
         viewModelScope.launch {
             val value = _uiState.value
-            if (value is UiState.Adding) {
+            if (value is UiState.AddEdit) {
                 val state = value.state
                 val recipe = Recipe(
                     name = state.name.value,
@@ -89,8 +107,11 @@ class AddRecipeViewModel @Inject constructor(
                     ingredients = "",
                     resultPhotoPath = ""
                 )
-                recipeRepository.saveRecipe(recipe)
-                _uiState.value = UiState.OnAddSuccess
+                if (recipeId != INVALID_ID) {
+                    recipe.id = recipeId
+                }
+                recipeRepository.setRecipe(recipe)
+                _uiState.value = UiState.OnSaveSuccess
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.jakubaniola.model
 
 data class Recipe(
-    val id: Int? = null,
+    var id: Int? = null,
     val name: String,
     val timeToPrepare: String,
     val rate: String,

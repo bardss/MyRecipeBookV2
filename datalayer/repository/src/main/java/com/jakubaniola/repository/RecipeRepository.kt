@@ -19,6 +19,6 @@ class RecipeRepository @Inject constructor(
         recipesDao.getRecipe(recipeId)
             .map { recipe -> recipe.toModel() }
 
-    suspend fun saveRecipe(recipe: Recipe) =
-        recipesDao.addRecipe(recipe.toEntity())
+    suspend fun setRecipe(recipe: Recipe) =
+        recipesDao.setRecipe(recipe.toEntity())
 }

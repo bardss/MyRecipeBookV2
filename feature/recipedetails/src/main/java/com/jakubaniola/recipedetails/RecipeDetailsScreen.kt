@@ -26,7 +26,7 @@ import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 
 @Composable
 fun RecipeDetailsScreen(
-//    navigateToEditRecipe: () -> Unit,
+    navigateToEditRecipe: (Int) -> Unit,
     viewModel: RecipeDetailsViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -36,7 +36,7 @@ fun RecipeDetailsScreen(
         fabState = FabState(
             icon = Icons.Default.Edit,
             contentDescription = "Edit recipe button",
-            onClick = { },
+            onClick = { navigateToEditRecipe(viewModel.recipeId) },
         ),
         content = {
             RecipeDetailsContent(it, uiState)
@@ -72,7 +72,6 @@ fun RecipeDetailsContent(
         }
     }
 }
-
 
 @Composable
 fun RecipeDetails(
