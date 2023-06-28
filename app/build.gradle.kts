@@ -59,7 +59,6 @@ dependencies {
 
     // UI testing
     androidTestImplementation(testlibs.junit.ext)
-    androidTestImplementation(testlibs.espresso.core)
     androidTestImplementation(platform(androidx.compose))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 

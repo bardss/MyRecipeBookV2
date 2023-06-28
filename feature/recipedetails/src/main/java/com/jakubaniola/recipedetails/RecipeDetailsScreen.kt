@@ -29,21 +29,43 @@ import com.jakubaniola.designsystem.components.fab.FabState
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 
 @Composable
-fun RecipeDetailsScreen(
+fun RecipeDetailsRoute(
     navigateToEditRecipe: (Int) -> Unit,
     navigateBack: () -> Unit,
     viewModel: RecipeDetailsViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
-    RecipeDetailsScaffold(
+    RecipeDetailsScreen(
         navigateToEditRecipe = navigateToEditRecipe,
+        navigateBack = navigateBack,
         onRemoveClick = viewModel::onRemoveClick,
-        onConfirmRemove = navigateBack,
         onConfirmRemoveClick = viewModel::onConfirmRemoveClick,
         onCancelRemoveClick = viewModel::onCancelRemoveClick,
         uiState = uiState,
         recipeId = viewModel.recipeId,
+    )
+
+}
+
+@Composable
+fun RecipeDetailsScreen(
+    navigateToEditRecipe: (Int) -> Unit,
+    navigateBack: () -> Unit,
+    onRemoveClick: () -> Unit,
+    onConfirmRemoveClick: () -> Unit,
+    onCancelRemoveClick: () -> Unit,
+    uiState: UiState,
+    recipeId: Int
+) {
+    RecipeDetailsScaffold(
+        navigateToEditRecipe = navigateToEditRecipe,
+        onRemoveClick = onRemoveClick,
+        onConfirmRemove = navigateBack,
+        onConfirmRemoveClick = onConfirmRemoveClick,
+        onCancelRemoveClick = onCancelRemoveClick,
+        uiState = uiState,
+        recipeId = recipeId,
     )
 }
 

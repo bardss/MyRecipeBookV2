@@ -18,22 +18,61 @@ dependencyResolutionManagement {
             library("compiler", "com.google.dagger:hilt-compiler:2.44")
             library("navigation", "androidx.hilt:hilt-navigation-compose:1.0.0")
             bundle("hilt", listOf("android", "navigation"))
-            plugin( "plugin", "com.google.dagger.hilt.android").version("2.44")
+            plugin("plugin", "com.google.dagger.hilt.android").version("2.44")
         }
         create("androidx") {
             library("core-ktx", "androidx.core:core-ktx:1.10.1")
             library("lifecycle-runtime-ktx", "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
             library("activity-compose", "androidx.activity:activity-compose:1.7.2")
-            library("lifecycle-runtime-compose", "androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+            library(
+                "lifecycle-runtime-compose",
+                "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
+            )
             library("compose-navigation", "androidx.navigation:navigation-compose:2.5.3")
-            bundle("compose", listOf("lifecycle-runtime-ktx", "activity-compose", "lifecycle-runtime-compose", "compose-navigation"))
+            bundle(
+                "compose",
+                listOf(
+                    "lifecycle-runtime-ktx",
+                    "activity-compose",
+                    "lifecycle-runtime-compose",
+                    "compose-navigation"
+                )
+            )
             library("compose", "androidx.compose:compose-bom:2022.10.00")
         }
         create("testlibs") {
             library("junit-core", "junit:junit:4.13.2")
             library("junit-ext", "androidx.test.ext:junit:1.1.5")
-            bundle("junit", listOf("junit-core", "junit-ext"))
-            library("espresso-core", "androidx.test.espresso:espresso-core:3.5.1")
+            bundle(
+                "junit",
+                listOf("junit-core", "junit-ext")
+            )
+            library(
+                "kotlinx-coroutines-core",
+                "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1"
+            )
+            library(
+                "kotlinx-coroutines-test",
+                "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1"
+            )
+            bundle(
+                "kotlinx",
+                listOf(
+                    "kotlinx-coroutines-core",
+                    "kotlinx-coroutines-test",
+                )
+            )
+            library("androidx-text-core-ktx", "androidx.test:core-ktx:1.5.0")
+            library("androidx-text-ext-ktx", "androidx.test.ext:junit-ktx:1.1.5")
+            library("androidx-text-runner", "androidx.test:runner:1.5.2")
+            bundle(
+                "androidx",
+                listOf(
+                    "androidx-text-core-ktx",
+                    "androidx-text-ext-ktx"
+                )
+            )
+            library("mockk", "io.mockk:mockk:1.13.5")
         }
         create("external") {
             library("kotlin-bom", "org.jetbrains.kotlin:kotlin-bom:1.8.0")
@@ -52,10 +91,11 @@ dependencyResolutionManagement {
 rootProject.name = "MyRecipeBook"
 include(":app")
 include(":designsystem")
-include(":feature:recipeslist")
-include(":common")
+include(":model")
 include(":datalayer:repository")
 include(":datalayer:datasource:database")
-include(":model")
 include(":feature:addeditrecipe")
 include(":feature:recipedetails")
+include(":feature:recipeslist")
+include(":core:testing")
+include(":core:common")

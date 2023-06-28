@@ -14,7 +14,6 @@ class LibraryJvmVersionPlugin : Plugin<Project> {
                     // https://developer.android.com/studio/write/java11-minimal-support-table
                     sourceCompatibility = JVM_VERSION
                     targetCompatibility = JVM_VERSION
-                    isCoreLibraryDesugaringEnabled = true
                 }
             }
             tasks.withType<KotlinCompile>().configureEach {

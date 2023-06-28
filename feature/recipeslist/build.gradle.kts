@@ -29,9 +29,10 @@ android {
 dependencies {
     // Modules
     implementation(project(":designsystem"))
-    implementation(project(":common"))
+    implementation(project(":core:common"))
     implementation(project(":datalayer:repository"))
     implementation(project(":model"))
+    testImplementation(project(":core:testing"))
 
     // Libraries
     implementation(androidx.core.ktx)
@@ -45,12 +46,8 @@ dependencies {
     implementation(di.bundles.hilt)
     kapt(di.compiler)
 
-    // Unit Testing
-    testImplementation(testlibs.bundles.junit)
-
     // UI testing
     androidTestImplementation(testlibs.junit.ext)
-    androidTestImplementation(testlibs.espresso.core)
     androidTestImplementation(platform(androidx.compose))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
