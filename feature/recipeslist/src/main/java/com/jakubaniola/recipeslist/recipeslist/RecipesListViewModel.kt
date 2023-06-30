@@ -39,7 +39,8 @@ class RecipesListViewModel @Inject constructor(
                             filteredRecipes = recipeItems,
                             query = "",
                             isRecipesListEmpty = recipeItems.isEmpty(),
-                            isSearchResultEmpty = false
+                            isSearchResultEmpty = false,
+                            isSearchBarVisible = recipeItems.isNotEmpty()
                         )
                     )
                 }

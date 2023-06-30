@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.LazyGridItemScopeImpl.animateItemPlacement
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -16,6 +15,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -79,21 +79,21 @@ fun RecipesListContent(
             .fillMaxWidth()
     ) {
         if (uiState is UiState.Success) {
-            if (!uiState.state.isRecipesListEmpty) {
-                RecipeSearchBar(
-                    uiState.state.query,
-                    onSearchQuery
-                )
-                RecipesGridList(
-                    uiState.state.filteredRecipes,
-                    navigateToRecipeDetails
-                )
-            } else {
+            if (uiState.state.isSearchBarVisible) {
+                RecipeSearchBar(uiState.state.query, onSearchQuery)
+            }
+            if (uiState.state.isRecipesListEmpty) {
                 ListEmptyState(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                     resourceText = R.string.no_recipes
                 )
+            } else if (uiState.state.isSearchResultEmpty) {
+                ListEmptyState(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    resourceText = R.string.no_recipes_found
+                )
+            } else {
+                RecipesGridList(uiState.state.filteredRecipes, navigateToRecipeDetails)
             }
         } else {
             CircularProgressIndicator(
@@ -125,7 +125,9 @@ private fun RecipesGridList(
             items(recipes) { recipe ->
                 RecipeGridListItem(
                     name = recipe.name,
+                    rateLabel = stringResource(id = R.string.rate_with_colon),
                     rate = recipe.rateValue,
+                    prepTimeLabel = stringResource(id = R.string.prep_time_with_colon),
                     prepTime = recipe.prepTimeValue,
                     image = recipe.image,
                     onGridListItemClick = {

@@ -19,7 +19,6 @@ class RecipeRepository @Inject constructor(
     fun getRecipe(recipeId: Int) =
         recipesDao.getRecipe(recipeId)
             .map { recipe -> recipe.toModel() }
-            .catch { }
 
     suspend fun removeRecipe(recipeId: Int) =
         recipesDao.deleteRecipe(recipeId)

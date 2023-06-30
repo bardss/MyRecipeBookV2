@@ -8,7 +8,8 @@ data class RecipesListState(
     val filteredRecipes: List<RecipeItem>,
     val query: String = "",
     val isRecipesListEmpty: Boolean = false,
-    val isSearchResultEmpty: Boolean = false
+    val isSearchResultEmpty: Boolean = false,
+    val isSearchBarVisible: Boolean = false
 )
 
 data class RecipeItem(
