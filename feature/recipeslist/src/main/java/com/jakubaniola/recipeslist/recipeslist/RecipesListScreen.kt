@@ -39,6 +39,7 @@ fun RecipesListRoute(
         navigateToAddRecipe = navigateToAddRecipe,
         navigateToRecipeDetails = navigateToRecipeDetails,
         onSearchQuery = viewModel::updateQuery,
+        onOrderByRateClick = viewModel::onOrderByRateClick,
         uiState = uiState,
     )
 }
@@ -48,6 +49,7 @@ fun RecipesListScreen(
     navigateToAddRecipe: () -> Unit,
     navigateToRecipeDetails: (Int) -> Unit,
     onSearchQuery: (String) -> Unit,
+    onOrderByRateClick: () -> Unit,
     uiState: UiState
 ) {
     MrbScaffold(
@@ -60,17 +62,17 @@ fun RecipesListScreen(
             )
         ),
         content = {
-            RecipesListContent(it, navigateToRecipeDetails, onSearchQuery, uiState)
+            RecipesListContent(it, navigateToRecipeDetails, onSearchQuery, onOrderByRateClick, uiState)
         }
     )
 }
-
 
 @Composable
 fun RecipesListContent(
     paddingValues: PaddingValues,
     navigateToRecipeDetails: (Int) -> Unit,
     onSearchQuery: (String) -> Unit,
+    onOrderByRateClick: () -> Unit,
     uiState: UiState
 ) {
     Column(
@@ -80,14 +82,19 @@ fun RecipesListContent(
     ) {
         if (uiState is UiState.Success) {
             if (uiState.state.isSearchBarVisible) {
-                RecipeSearchBar(uiState.state.query, onSearchQuery)
+                RecipeSearchBar(
+                    uiState.state.query,
+                    uiState.state.isOrderedByRate,
+                    onSearchQuery,
+                    onOrderByRateClick
+                )
             }
-            if (uiState.state.isRecipesListEmpty) {
+            if (uiState.state.isRecipesEmptyStateVisible) {
                 ListEmptyState(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     resourceText = R.string.no_recipes
                 )
-            } else if (uiState.state.isSearchResultEmpty) {
+            } else if (uiState.state.isSearchEmptyStateVisible) {
                 ListEmptyState(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     resourceText = R.string.no_recipes_found
@@ -113,10 +120,9 @@ private fun RecipesGridList(
 ) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
-        verticalItemSpacing = 8.dp,
+//        verticalItemSpacing = 8.dp,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(
-            top = 8.dp,
             start = 8.dp,
             end = 8.dp,
             bottom = 120.dp
@@ -126,7 +132,7 @@ private fun RecipesGridList(
                 RecipeGridListItem(
                     name = recipe.name,
                     rateLabel = stringResource(id = R.string.rate_with_colon),
-                    rate = recipe.rateValue,
+                    rate = recipe.rateValue.toString(),
                     prepTimeLabel = stringResource(id = R.string.prep_time_with_colon),
                     prepTime = recipe.prepTimeValue,
                     image = recipe.image,

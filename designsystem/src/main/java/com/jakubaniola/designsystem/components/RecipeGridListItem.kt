@@ -37,7 +37,8 @@ fun RecipeGridListItem(
 ) {
     Surface(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(top = 8.dp),
         shape = MaterialTheme.shapes.small
             .copy(
                 bottomStart = ShapeDefaults.ExtraLarge.bottomStart

@@ -45,7 +45,6 @@ fun RecipeDetailsRoute(
         uiState = uiState,
         recipeId = viewModel.recipeId,
     )
-
 }
 
 @Composable

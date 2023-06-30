@@ -7,16 +7,17 @@ data class RecipesListState(
     val allRecipes: List<RecipeItem>,
     val filteredRecipes: List<RecipeItem>,
     val query: String = "",
-    val isRecipesListEmpty: Boolean = false,
-    val isSearchResultEmpty: Boolean = false,
-    val isSearchBarVisible: Boolean = false
+    val isRecipesEmptyStateVisible: Boolean = false,
+    val isSearchEmptyStateVisible: Boolean = false,
+    val isSearchBarVisible: Boolean = false,
+    val isOrderedByRate: Boolean = false
 )
 
 data class RecipeItem(
     val id: Int,
     val name: String,
     val rateResource: Int,
-    val rateValue: String,
+    val rateValue: Int,
     val prepTimeResource: Int,
     val prepTimeValue: String,
     val image: String

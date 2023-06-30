@@ -101,7 +101,7 @@ class AddEditRecipeViewModel @Inject constructor(
                 val recipe = Recipe(
                     name = state.name.value,
                     timeToPrepare = state.prepTime.value,
-                    rate = state.rate.value,
+                    rate = state.rate.value.toIntOrNull() ?: 0,
                     urlToRecipe = state.linkToRecipe.value,
                     recipe = state.recipe.value,
                     ingredients = "",

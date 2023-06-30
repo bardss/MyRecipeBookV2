@@ -15,7 +15,7 @@ data class AddEditRecipeState(
 fun Recipe.toAddEditRecipe() = AddEditRecipeState(
     name = FieldValue(name),
     prepTime = FieldValue(timeToPrepare),
-    rate = FieldValue(rate),
+    rate = FieldValue(rate.toString()),
     recipe = FieldValue(recipe),
     linkToRecipe = FieldValue(urlToRecipe),
     isSaveEnabled = true

@@ -15,7 +15,7 @@ data class RecipeDetails(
 fun Recipe.toDetails() = RecipeDetails(
     name = name,
     timeToPrepare = timeToPrepare,
-    rate = rate,
+    rate = rate.toString(),
     resultPhotoPath = resultPhotoPath,
     urlToRecipe = urlToRecipe,
     ingredients = ingredients,

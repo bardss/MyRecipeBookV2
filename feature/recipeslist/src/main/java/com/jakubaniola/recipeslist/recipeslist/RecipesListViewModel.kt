@@ -2,19 +2,11 @@ package com.jakubaniola.recipeslist.recipeslist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jakubaniola.common.DEBOUNCE
 import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,8 +30,8 @@ class RecipesListViewModel @Inject constructor(
                             allRecipes = recipeItems,
                             filteredRecipes = recipeItems,
                             query = "",
-                            isRecipesListEmpty = recipeItems.isEmpty(),
-                            isSearchResultEmpty = false,
+                            isRecipesEmptyStateVisible = recipeItems.isEmpty(),
+                            isSearchEmptyStateVisible = false,
                             isSearchBarVisible = recipeItems.isNotEmpty()
                         )
                     )
@@ -54,15 +46,42 @@ class RecipesListViewModel @Inject constructor(
         val value = _uiState.value
         if (value is UiState.Success) {
             viewModelScope.launch {
-                val state = value.state
-                val filtered = state.allRecipes.filter(typed)
-                val newUiState = state.copy(
-                    filteredRecipes = filtered,
-                    query = typed,
-                    isSearchResultEmpty = filtered.isEmpty(),
+                filter(
+                    uiState = value,
+                    typed = typed
                 )
-                _uiState.value = value.copy(newUiState)
             }
         }
+    }
+
+    fun onOrderByRateClick() {
+        val value = _uiState.value
+        if (value is UiState.Success) {
+            viewModelScope.launch {
+                filter(
+                    uiState = value,
+                    orderByRate = !value.state.isOrderedByRate
+                )
+            }
+        }
+    }
+
+    private fun filter(
+        uiState: UiState.Success,
+        typed: String = uiState.state.query,
+        orderByRate: Boolean = uiState.state.isOrderedByRate
+    ) {
+        val state = uiState.state
+        val filtered = state.allRecipes.filter(
+            query = typed,
+            orderByRate = orderByRate
+        )
+        val newUiState = state.copy(
+            filteredRecipes = filtered,
+            query = typed,
+            isSearchEmptyStateVisible = filtered.isEmpty(),
+            isOrderedByRate = orderByRate
+        )
+        _uiState.value = uiState.copy(state = newUiState)
     }
 }
