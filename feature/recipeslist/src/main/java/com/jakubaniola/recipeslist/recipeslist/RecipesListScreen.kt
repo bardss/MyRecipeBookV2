@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.LazyGridItemScopeImpl.animateItemPlacement
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -28,10 +29,26 @@ import com.jakubaniola.designsystem.components.fab.FabState
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 
 @Composable
-fun RecipesListScreen(
+fun RecipesListRoute(
     navigateToAddRecipe: () -> Unit,
     navigateToRecipeDetails: (Int) -> Unit,
     viewModel: RecipesListViewModel = hiltViewModel(),
+) {
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    RecipesListScreen(
+        navigateToAddRecipe = navigateToAddRecipe,
+        navigateToRecipeDetails = navigateToRecipeDetails,
+        onSearchQuery = viewModel::updateQuery,
+        uiState = uiState,
+    )
+}
+
+@Composable
+fun RecipesListScreen(
+    navigateToAddRecipe: () -> Unit,
+    navigateToRecipeDetails: (Int) -> Unit,
+    onSearchQuery: (String) -> Unit,
+    uiState: UiState
 ) {
     MrbScaffold(
         topBarTitle = R.string.app_name,
@@ -43,32 +60,32 @@ fun RecipesListScreen(
             )
         ),
         content = {
-            RecipesListContent(
-                it,
-                navigateToRecipeDetails,
-                viewModel
-            )
+            RecipesListContent(it, navigateToRecipeDetails, onSearchQuery, uiState)
         }
     )
 }
+
 
 @Composable
 fun RecipesListContent(
     paddingValues: PaddingValues,
     navigateToRecipeDetails: (Int) -> Unit,
-    viewModel: RecipesListViewModel
+    onSearchQuery: (String) -> Unit,
+    uiState: UiState
 ) {
     Column(
         modifier = Modifier
             .padding(top = paddingValues.calculateTopPadding())
             .fillMaxWidth()
     ) {
-        val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
         if (uiState is UiState.Success) {
             if (!uiState.state.isRecipesListEmpty) {
-                RecipeSearchBar { }
+                RecipeSearchBar(
+                    uiState.state.query,
+                    onSearchQuery
+                )
                 RecipesGridList(
-                    uiState.state.recipes,
+                    uiState.state.filteredRecipes,
                     navigateToRecipeDetails
                 )
             } else {
@@ -124,7 +141,7 @@ private fun RecipesGridList(
 @Composable
 fun RecipesListContentPreview() {
     MyRecipeBookTheme {
-        RecipesListScreen(
+        RecipesListRoute(
             {},
             {}
         )

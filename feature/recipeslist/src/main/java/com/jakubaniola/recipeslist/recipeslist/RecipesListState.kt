@@ -4,7 +4,9 @@ import com.jakubaniola.common.R
 import com.jakubaniola.model.Recipe
 
 data class RecipesListState(
-    val recipes: List<RecipeItem>,
+    val allRecipes: List<RecipeItem>,
+    val filteredRecipes: List<RecipeItem>,
+    val query: String = "",
     val isRecipesListEmpty: Boolean = false,
     val isSearchResultEmpty: Boolean = false
 )

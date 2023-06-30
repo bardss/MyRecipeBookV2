@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeSearchBar(
+    searchQuery: String,
     onValueChange: (String) -> Unit
 ) {
     Row(
@@ -24,7 +25,7 @@ fun RecipeSearchBar(
         TextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = "",
+            value = searchQuery,
             onValueChange = {
                 onValueChange(it)
             },
@@ -34,12 +35,12 @@ fun RecipeSearchBar(
                     contentDescription = "Search icon"
                 )
             },
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "Toggle search by starred recipes"
-                )
-            }
+//            trailingIcon = {
+//                Icon(
+//                    imageVector = Icons.Default.Star,
+//                    contentDescription = "Toggle search by starred recipes"
+//                )
+//            }
         )
     }
 }
@@ -47,5 +48,8 @@ fun RecipeSearchBar(
 @Preview
 @Composable
 fun RecipeSearchBarPreview() {
-    RecipeSearchBar {}
+    RecipeSearchBar(
+        searchQuery = "Search query",
+        onValueChange = { }
+    )
 }
