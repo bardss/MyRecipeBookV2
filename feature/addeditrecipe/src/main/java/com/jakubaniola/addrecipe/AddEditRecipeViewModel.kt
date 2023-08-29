@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,6 +36,7 @@ class AddEditRecipeViewModel @Inject constructor(
             recipeRepository.getRecipe(recipeId)
                 .map { it.toAddEditRecipe() }
                 .catch { emit(AddEditRecipeState()) }
+                .takeWhile { _uiState.value is UiState.Loading }
                 .collect {
                     _uiState.value = UiState.AddEdit(it)
                 }

@@ -14,11 +14,12 @@ import com.jakubaniola.common.FieldValue
 @ExperimentalMaterial3Api
 @Composable
 fun FormField(
+    modifier: Modifier,
     fieldValue: FieldValue,
     labelStringId: Int,
     maxLines: Int = 1,
     keyboardType: KeyboardType = KeyboardType.Text,
-    modifier: Modifier,
+    isThereNextField: Boolean = false,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -34,8 +35,9 @@ fun FormField(
             }
         },
         keyboardOptions = KeyboardOptions(
-            imeAction = if (maxLines == 1) ImeAction.Done else ImeAction.Default,
+            imeAction = if (isThereNextField) ImeAction.Next else ImeAction.Default,
             keyboardType = keyboardType
-        )
+        ),
+        singleLine = maxLines == 1,
     )
 }

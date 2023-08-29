@@ -1,12 +1,16 @@
 package com.jakubaniola.addrecipe
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -35,6 +39,7 @@ fun AddEditRecipeScreen(
     viewModel: AddEditRecipeViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    Log.e("Jakub123", "SCREEN uiState1: ${uiState}")
     val isFabEnabled = if (uiState is UiState.AddEdit) uiState.state.isSaveEnabled else false
 
     MrbScaffold(
@@ -64,6 +69,7 @@ fun AddEditRecipeContent(
     onAddSuccess: () -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    Log.e("Jakub123", "SCREEN uiState2: ${uiState}")
 
     when (uiState) {
         is UiState.AddEdit -> {
@@ -91,7 +97,7 @@ fun AddEditRecipeContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 private fun AddEditRecipeForm(
     paddingValues: PaddingValues,
     onNameChange: (String) -> Unit,
@@ -119,6 +125,9 @@ private fun AddEditRecipeForm(
         modifier = Modifier
             .verticalScroll(scrollState)
             .padding(paddingValues)
+            .imePadding()
+            .imeNestedScroll()
+            .padding(0.dp, 0.dp, 0.dp, 20.dp)
     ) {
         val rowModifier = Modifier
             .fillMaxWidth()
@@ -140,7 +149,8 @@ private fun AddEditRecipeForm(
             fieldValue = uiState.name,
             labelStringId = R.string.name,
             modifier = rowModifier,
-            onValueChange = onNameChange
+            onValueChange = onNameChange,
+            isThereNextField = true,
         )
 
         Row(
@@ -155,7 +165,8 @@ private fun AddEditRecipeForm(
                     .padding(
                         end = spacing
                     ),
-                onValueChange = onPrepTimeChange
+                onValueChange = onPrepTimeChange,
+                isThereNextField = true,
             )
             FormField(
                 fieldValue = uiState.rate,
@@ -166,20 +177,23 @@ private fun AddEditRecipeForm(
                         start = spacing
                     ),
                 onValueChange = onRateChange,
-                keyboardType = KeyboardType.Number
+                keyboardType = KeyboardType.Number,
+                isThereNextField = true,
             )
         }
-        FormField(
-            fieldValue = uiState.recipe,
-            labelStringId = R.string.recipe,
-            modifier = rowModifier,
-            onValueChange = onRecipeChange
-        )
         FormField(
             fieldValue = uiState.linkToRecipe,
             labelStringId = R.string.link_to_recipe,
             modifier = rowModifier,
-            onValueChange = onLinkToRecipeChange
+            onValueChange = onLinkToRecipeChange,
+            isThereNextField = true,
+        )
+        FormField(
+            fieldValue = uiState.recipe,
+            labelStringId = R.string.recipe,
+            modifier = rowModifier,
+            onValueChange = onRecipeChange,
+            maxLines = 50
         )
     }
 }
