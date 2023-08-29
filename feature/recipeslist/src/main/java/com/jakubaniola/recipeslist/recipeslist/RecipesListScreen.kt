@@ -134,7 +134,7 @@ private fun RecipesGridList(
                     rate = recipe.rateValue.toString(),
                     prepTimeLabel = stringResource(id = R.string.prep_time_with_colon),
                     prepTime = recipe.prepTimeValue,
-                    imageUri = recipe.imageUri,
+                    imageUri = recipe.imageResultUri,
                     onGridListItemClick = {
                         navigateToRecipeDetails(recipe.id)
                     }

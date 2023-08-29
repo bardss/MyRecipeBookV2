@@ -30,7 +30,6 @@ fun PickImage(
 ) {
     val doesImageExist = imageUri.isNotEmpty()
     val alpha = if (doesImageExist) 1f else 0.5f
-
     Box(
         modifier = modifier
             .padding(40.dp, 30.dp)

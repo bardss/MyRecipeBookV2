@@ -20,7 +20,7 @@ data class RecipeItem(
     val rateValue: Int,
     val prepTimeResource: Int,
     val prepTimeValue: String,
-    val imageUri: String
+    val imageResultUri: String
 )
 
 fun Recipe.toItem() = RecipeItem(
@@ -30,5 +30,5 @@ fun Recipe.toItem() = RecipeItem(
     rateValue = rate,
     prepTimeResource = R.string.prep_time_with_colon,
     prepTimeValue = timeToPrepare,
-    imageUri = imageUri
+    imageResultUri = imageResultUri
 )

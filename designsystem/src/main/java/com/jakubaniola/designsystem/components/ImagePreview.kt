@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
@@ -26,10 +27,12 @@ import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 fun ImagePreview(
     modifier: Modifier = Modifier,
     imageUri: String,
+    horizontalPadding: Dp = 20.dp,
+    verticalPadding: Dp = 20.dp
 ) {
     Box(
         modifier = modifier
-            .padding(40.dp, 30.dp)
+            .padding(horizontalPadding, verticalPadding)
             .background(
                 color = MaterialTheme.colorScheme.secondaryContainer,
                 shape = MaterialTheme.shapes.extraSmall,

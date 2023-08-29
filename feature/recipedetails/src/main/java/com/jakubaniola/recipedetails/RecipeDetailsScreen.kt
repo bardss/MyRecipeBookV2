@@ -1,10 +1,13 @@
 package com.jakubaniola.recipedetails
 
+import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -180,9 +183,13 @@ fun RecipeDetails(
     modifier: Modifier,
     recipeDetails: RecipeDetails
 ) {
-    Column(modifier = modifier) {
-        if (recipeDetails.imageUri.isNotEmpty()) {
-            ImagePreview(imageUri = recipeDetails.imageUri)
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = modifier
+            .verticalScroll(scrollState)
+    ) {
+        if (recipeDetails.imageResultUri.isNotEmpty()) {
+            ImagePreview(imageUri = recipeDetails.imageResultUri)
         }
 
         Text(
@@ -244,11 +251,10 @@ fun RecipeDetailsScaffoldPreview() {
                     name = "Recipe",
                     timeToPrepare = "5h",
                     rate = "5",
-                    resultPhotoPath = "wfwaefwafe.pl",
                     urlToRecipe = "wefwr.przepisy.pl",
                     ingredients = "",
                     recipe = "",
-                    imageUri = ""
+                    imageResultUri = ""
                 ),
                 false
             ),
@@ -272,11 +278,10 @@ fun RecipeDetailsScaffoldDialogPreview() {
                     name = "Recipe",
                     timeToPrepare = "5h",
                     rate = "5",
-                    resultPhotoPath = "wfwaefwafe.pl",
                     urlToRecipe = "wefwr.przepisy.pl",
                     ingredients = "",
                     recipe = "",
-                    imageUri = "",
+                    imageResultUri = "",
                 ),
                 true
             ),
@@ -297,11 +302,10 @@ fun RecipeDetailsPreview() {
                 name = "Spaghetti Bolognese",
                 timeToPrepare = "4h",
                 rate = "9",
-                resultPhotoPath = "https://awfewef.pl",
                 urlToRecipe = "www.przepisy.pl",
                 ingredients = "Ingredients",
                 recipe = "Recipe",
-                imageUri = ""
+                imageResultUri = ""
             )
         )
     }

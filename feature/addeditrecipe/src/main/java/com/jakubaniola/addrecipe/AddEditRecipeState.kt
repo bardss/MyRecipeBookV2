@@ -9,7 +9,7 @@ data class AddEditRecipeState(
     val rate: FieldValue = FieldValue(""),
     val recipe: FieldValue = FieldValue(""),
     val linkToRecipe: FieldValue = FieldValue(""),
-    val imageUri: String = "",
+    val imageResultUri: String = "",
     val isSaveEnabled: Boolean = false
 )
 
@@ -20,5 +20,5 @@ fun Recipe.toAddEditRecipe() = AddEditRecipeState(
     recipe = FieldValue(recipe),
     linkToRecipe = FieldValue(urlToRecipe),
     isSaveEnabled = true,
-    imageUri = this.imageUri
+    imageResultUri = this.imageResultUri
 )
