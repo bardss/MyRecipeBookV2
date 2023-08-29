@@ -2,11 +2,12 @@
 
 package com.jakubaniola.designsystem.components
 
-import androidx.compose.foundation.Image
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,12 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import coil.size.Size
+import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +30,7 @@ fun RecipeGridListItem(
     rate: String,
     prepTimeLabel: String,
     prepTime: String,
-    image: String,
+    imageUri: String,
     onGridListItemClick: (String) -> Unit,
 ) {
     Surface(
@@ -52,16 +50,11 @@ fun RecipeGridListItem(
                 .fillMaxWidth(),
             overlapFactor = 0.8f
         ) {
-            val model = ImageRequest.Builder(LocalContext.current)
-                .data(image)
-                .size(Size.ORIGINAL)
-                .crossfade(true)
-                .build()
-            val painter = rememberAsyncImagePainter(model)
-            Image(
+            AsyncImage(
+                model = Uri.parse(imageUri),
                 modifier = Modifier
-                    .fillMaxWidth(),
-                painter = painter,
+                    .fillMaxWidth()
+                    .height(100.dp),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth
             )
@@ -143,7 +136,7 @@ fun RecipeGridListItemPreview() {
         rate = "9/10",
         prepTimeLabel = "Prep. time:",
         prepTime = "2h",
-        image = "https://cdn.britannica.com/36/123536-050-95CB0C6E/Variety-fruits-vegetables.jpg"
+        imageUri = ""
     ) {
     }
 }

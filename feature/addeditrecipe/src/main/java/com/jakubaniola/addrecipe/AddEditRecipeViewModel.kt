@@ -71,6 +71,14 @@ class AddEditRecipeViewModel @Inject constructor(
         }
     }
 
+    fun onImageUpdate(imageUri: String?) {
+        if (imageUri != null) {
+            updateAddingState {
+                it.copy(imageUri = imageUri)
+            }
+        }
+    }
+
     private fun updateAddingState(
         update: (AddEditRecipeState) -> AddEditRecipeState
     ) {
@@ -105,7 +113,8 @@ class AddEditRecipeViewModel @Inject constructor(
                     urlToRecipe = state.linkToRecipe.value,
                     recipe = state.recipe.value,
                     ingredients = "",
-                    resultPhotoPath = ""
+                    resultPhotoPath = "",
+                    imageUri = state.imageUri
                 )
                 if (recipeId != INVALID_ID) {
                     recipe.id = recipeId

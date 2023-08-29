@@ -1,5 +1,8 @@
 package com.jakubaniola.addrecipe
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
 import com.jakubaniola.designsystem.components.FormField
 import com.jakubaniola.designsystem.components.MrbScaffold
+import com.jakubaniola.designsystem.components.PickImage
 import com.jakubaniola.designsystem.components.fab.FabState
 
 @Composable
@@ -66,6 +70,7 @@ fun AddEditRecipeContent(
                 onRateChange = viewModel::onRateChange,
                 onRecipeChange = viewModel::onRecipeChange,
                 onLinkToRecipeChange = viewModel::onLinkToRecipeChange,
+                onImageUpdate = viewModel::onImageUpdate,
                 uiState = uiState.state
             )
         }
@@ -90,10 +95,18 @@ private fun AddEditRecipeForm(
     onRateChange: (String) -> Unit,
     onRecipeChange: (String) -> Unit,
     onLinkToRecipeChange: (String) -> Unit,
+    onImageUpdate: (String?) -> Unit,
     uiState: AddEditRecipeState
 ) {
     val horizontalPadding = 16.dp
     val verticalPadding = 4.dp
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            onImageUpdate(uri?.toString())
+        }
+    )
 
     Column(
         modifier = Modifier
@@ -105,6 +118,15 @@ private fun AddEditRecipeForm(
                 horizontal = horizontalPadding,
                 vertical = verticalPadding
             )
+
+        PickImage(
+            imageUri = uiState.imageUri,
+            onClick = {
+                singlePhotoPickerLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                )
+            }
+        )
 
         FormField(
             fieldValue = uiState.name,

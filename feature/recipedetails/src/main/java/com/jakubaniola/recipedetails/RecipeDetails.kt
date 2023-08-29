@@ -9,7 +9,8 @@ data class RecipeDetails(
     val resultPhotoPath: String,
     val urlToRecipe: String,
     val ingredients: String,
-    val recipe: String
+    val recipe: String,
+    val imageUri: String,
 )
 
 fun Recipe.toDetails() = RecipeDetails(
@@ -19,5 +20,6 @@ fun Recipe.toDetails() = RecipeDetails(
     resultPhotoPath = resultPhotoPath,
     urlToRecipe = urlToRecipe,
     ingredients = ingredients,
-    recipe = recipe
+    recipe = recipe,
+    imageUri = imageUri
 )

@@ -9,7 +9,7 @@ import com.jakubaniola.database.entity.RecipeEntity
     entities = [
         RecipeEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = true,
 )
 abstract class MrbDatabase : RoomDatabase() {

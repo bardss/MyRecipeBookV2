@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
+import com.jakubaniola.designsystem.components.ImagePreview
 import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.fab.FabState
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
@@ -180,6 +181,10 @@ fun RecipeDetails(
     recipeDetails: RecipeDetails
 ) {
     Column(modifier = modifier) {
+        if (recipeDetails.imageUri.isNotEmpty()) {
+            ImagePreview(imageUri = recipeDetails.imageUri)
+        }
+
         Text(
             text = recipeDetails.name,
             modifier = Modifier
@@ -242,7 +247,8 @@ fun RecipeDetailsScaffoldPreview() {
                     resultPhotoPath = "wfwaefwafe.pl",
                     urlToRecipe = "wefwr.przepisy.pl",
                     ingredients = "",
-                    recipe = ""
+                    recipe = "",
+                    imageUri = ""
                 ),
                 false
             ),
@@ -269,7 +275,8 @@ fun RecipeDetailsScaffoldDialogPreview() {
                     resultPhotoPath = "wfwaefwafe.pl",
                     urlToRecipe = "wefwr.przepisy.pl",
                     ingredients = "",
-                    recipe = ""
+                    recipe = "",
+                    imageUri = "",
                 ),
                 true
             ),
@@ -293,7 +300,8 @@ fun RecipeDetailsPreview() {
                 resultPhotoPath = "https://awfewef.pl",
                 urlToRecipe = "www.przepisy.pl",
                 ingredients = "Ingredients",
-                recipe = "Recipe"
+                recipe = "Recipe",
+                imageUri = ""
             )
         )
     }

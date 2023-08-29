@@ -120,7 +120,6 @@ private fun RecipesGridList(
 ) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
-//        verticalItemSpacing = 8.dp,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(
             start = 8.dp,
@@ -135,7 +134,7 @@ private fun RecipesGridList(
                     rate = recipe.rateValue.toString(),
                     prepTimeLabel = stringResource(id = R.string.prep_time_with_colon),
                     prepTime = recipe.prepTimeValue,
-                    image = recipe.image,
+                    imageUri = recipe.imageUri,
                     onGridListItemClick = {
                         navigateToRecipeDetails(recipe.id)
                     }

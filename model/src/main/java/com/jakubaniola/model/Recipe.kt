@@ -8,5 +8,6 @@ data class Recipe(
     val resultPhotoPath: String,
     val urlToRecipe: String,
     val ingredients: String,
-    val recipe: String
+    val recipe: String,
+    val imageUri: String,
 )
