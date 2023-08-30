@@ -2,6 +2,7 @@ package com.jakubaniola.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.jakubaniola.database.dao.RecipeDao
 import com.jakubaniola.database.entity.RecipeEntity
 
@@ -9,9 +10,10 @@ import com.jakubaniola.database.entity.RecipeEntity
     entities = [
         RecipeEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
+@TypeConverters(Converters::class)
 abstract class MrbDatabase : RoomDatabase() {
     abstract fun recipeDao(): RecipeDao
 }

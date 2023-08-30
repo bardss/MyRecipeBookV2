@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jakubaniola.addrecipe.navigation.ARG_RECIPE_ID
+import com.jakubaniola.common.FieldValue
 import com.jakubaniola.common.INVALID_ID
 import com.jakubaniola.common.validateAndCopy
 import com.jakubaniola.common.validation.ValidationResult
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -69,7 +71,7 @@ class AddEditRecipeViewModel @Inject constructor(
 
     fun onIngredientChange(ingredient: String) {
         updateAddingState {
-            it.copy(ingredient = validateAndCopy(ingredient))
+            it.copy(ingredient = validateAndCopy(ingredient, ValidationType.EMPTY))
         }
     }
 
@@ -87,6 +89,28 @@ class AddEditRecipeViewModel @Inject constructor(
         }
     }
 
+    fun onIngredientAddClick() {
+        updateAddingState {
+            val ingredient = it.ingredient
+            if (!ingredient.isError() && ingredient.value.isNotEmpty()) {
+                val updatedList = it.ingredients + ingredient.value
+                it.copy(
+                    ingredient = FieldValue(""),
+                    ingredients = updatedList
+                )
+            } else it
+        }
+    }
+
+    fun onIngredientRemoveClick(index: Int) {
+        updateAddingState {
+            val ingredients = it.ingredients
+                .toMutableList()
+            ingredients.removeAt(index)
+            it.copy(ingredients = ingredients.toList())
+        }
+    }
+
     private fun updateAddingState(
         update: (AddEditRecipeState) -> AddEditRecipeState
     ) {
@@ -97,7 +121,7 @@ class AddEditRecipeViewModel @Inject constructor(
                 val updatedStateWithValidation = updatedState.copy(
                     isSaveEnabled = isRecipeDataValidToSave(updatedState)
                 )
-                _uiState.value = UiState.AddEdit(updatedStateWithValidation)
+                _uiState.emit(UiState.AddEdit(updatedStateWithValidation))
             }
         }
     }
@@ -120,7 +144,7 @@ class AddEditRecipeViewModel @Inject constructor(
                     rate = state.rate.value.toIntOrNull() ?: 0,
                     urlToRecipe = state.linkToRecipe.value,
                     recipe = state.recipe.value,
-                    ingredients = "",
+                    ingredients = state.ingredients,
                     imageResultUri = state.imageResultUri
                 )
                 if (recipeId != INVALID_ID) {

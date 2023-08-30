@@ -9,7 +9,7 @@ data class AddEditRecipeState(
     val rate: FieldValue = FieldValue(""),
     val recipe: FieldValue = FieldValue(""),
     val ingredient: FieldValue = FieldValue(""),
-    val ingredients: List<String> = listOf("Onion", "Becon", "Doniu"),
+    var ingredients: List<String> = listOf(),
     val linkToRecipe: FieldValue = FieldValue(""),
     val imageResultUri: String = "",
     val isSaveEnabled: Boolean = false

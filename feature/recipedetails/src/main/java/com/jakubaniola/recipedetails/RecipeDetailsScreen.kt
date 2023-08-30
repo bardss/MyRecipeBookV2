@@ -251,7 +251,7 @@ fun RecipeDetailsScaffoldPreview() {
                     timeToPrepare = "5h",
                     rate = "5",
                     urlToRecipe = "wefwr.przepisy.pl",
-                    ingredients = "",
+                    ingredients = listOf(),
                     recipe = "",
                     imageResultUri = ""
                 ),
@@ -278,7 +278,7 @@ fun RecipeDetailsScaffoldDialogPreview() {
                     timeToPrepare = "5h",
                     rate = "5",
                     urlToRecipe = "wefwr.przepisy.pl",
-                    ingredients = "",
+                    ingredients = listOf(),
                     recipe = "",
                     imageResultUri = "",
                 ),
@@ -302,7 +302,7 @@ fun RecipeDetailsPreview() {
                 timeToPrepare = "4h",
                 rate = "9",
                 urlToRecipe = "www.przepisy.pl",
-                ingredients = "Ingredients",
+                ingredients = listOf(),
                 recipe = "Recipe",
                 imageResultUri = ""
             )

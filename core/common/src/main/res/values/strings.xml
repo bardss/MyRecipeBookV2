@@ -11,6 +11,7 @@
     <string name="rate_out_of_10">Rate (out of 10)</string>
     <string name="recipe">Recipe</string>
     <string name="ingredient">Ingredient</string>
+    <string name="ingredients_list_empty">Ingredients list empty</string>
     <string name="link_to_recipe">Link to recipe</string>
     <string name="invalid_value">Invalid value</string>
     <string name="invalid_empty">Field cannot be empty</string>

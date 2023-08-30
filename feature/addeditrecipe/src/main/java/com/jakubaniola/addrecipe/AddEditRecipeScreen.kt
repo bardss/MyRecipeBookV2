@@ -3,6 +3,7 @@ package com.jakubaniola.addrecipe
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,7 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -24,10 +25,13 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -87,6 +91,8 @@ fun AddEditRecipeContent(
                 onRateChange = viewModel::onRateChange,
                 onRecipeChange = viewModel::onRecipeChange,
                 onIngredientChange = viewModel::onIngredientChange,
+                onIngredientAddClick = viewModel::onIngredientAddClick,
+                onIngredientRemoveClick = viewModel::onIngredientRemoveClick,
                 onLinkToRecipeChange = viewModel::onLinkToRecipeChange,
                 onImageUpdate = viewModel::onImageUpdate,
                 uiState = uiState.state
@@ -105,7 +111,7 @@ fun AddEditRecipeContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 private fun AddEditRecipeForm(
     paddingValues: PaddingValues,
     onNameChange: (String) -> Unit,
@@ -113,6 +119,8 @@ private fun AddEditRecipeForm(
     onRateChange: (String) -> Unit,
     onRecipeChange: (String) -> Unit,
     onIngredientChange: (String) -> Unit,
+    onIngredientAddClick: () -> Unit,
+    onIngredientRemoveClick: (Int) -> Unit,
     onLinkToRecipeChange: (String) -> Unit,
     onImageUpdate: (String?) -> Unit,
     uiState: AddEditRecipeState
@@ -216,7 +224,7 @@ private fun AddEditRecipeForm(
                 val iconBackgroundColor = MaterialTheme.colorScheme.secondaryContainer
                 val iconColor = MaterialTheme.colorScheme.secondary
                 FilledIconButton(
-                    onClick = { },
+                    onClick = onIngredientAddClick,
                     shape = CircleShape,
                     colors = IconButtonDefaults.filledIconButtonColors(
                         containerColor = iconBackgroundColor,
@@ -230,13 +238,28 @@ private fun AddEditRecipeForm(
                     )
                 }
             }
+
+            if (uiState.ingredients.isEmpty()) {
+                Text(
+                    modifier = rowModifier
+                        .padding(8.dp, 16.dp)
+                        .alpha(0.7f),
+                    text = stringResource(id = R.string.ingredients_list_empty),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
         }
 
-        items(uiState.ingredients) {
+        itemsIndexed(uiState.ingredients) { index, item ->
             RemovableRow(
-                modifier = rowModifier,
-                text = it
-            ) { }
+                modifier = rowModifier
+                    .animateItemPlacement(),
+                text = item,
+                onRemoveClick = {
+                    onIngredientRemoveClick(index)
+                },
+            )
             Spacer(
                 modifier = Modifier
                     .padding(horizontalPadding, 0.dp)
@@ -268,7 +291,7 @@ fun AddEditRecipeFormPreview() {
     MyRecipeBookTheme {
         AddEditRecipeForm(
             paddingValues = PaddingValues(),
-            {}, {}, {}, {}, {}, {}, {},
+            {}, {}, {}, {}, {}, {}, {}, {}, {},
             uiState = AddEditRecipeState()
         )
     }

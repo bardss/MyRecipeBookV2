@@ -1,5 +1,6 @@
 package com.jakubaniola.designsystem.components.removablelist
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +25,8 @@ fun RemovableRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(12.dp)
+            .clickable { onRemoveClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

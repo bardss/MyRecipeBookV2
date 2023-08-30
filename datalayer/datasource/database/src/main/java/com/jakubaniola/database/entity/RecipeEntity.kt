@@ -12,7 +12,7 @@ data class RecipeEntity(
     val timeToPrepare: String,
     val rate: Int,
     val urlToRecipe: String,
-    val ingredients: String,
+    val ingredients: List<String>,
     val recipe: String,
     val imageUri: String,
 )
