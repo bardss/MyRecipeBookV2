@@ -67,6 +67,12 @@ class AddEditRecipeViewModel @Inject constructor(
         }
     }
 
+    fun onIngredientChange(ingredient: String) {
+        updateAddingState {
+            it.copy(ingredient = validateAndCopy(ingredient))
+        }
+    }
+
     fun onLinkToRecipeChange(linkToRecipe: String) {
         updateAddingState {
             it.copy(linkToRecipe = validateAndCopy(linkToRecipe))

@@ -1,28 +1,35 @@
 package com.jakubaniola.addrecipe
 
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,6 +39,8 @@ import com.jakubaniola.designsystem.components.FormField
 import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.PickImage
 import com.jakubaniola.designsystem.components.fab.FabState
+import com.jakubaniola.designsystem.components.removablelist.RemovableRow
+import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 
 @Composable
 fun AddEditRecipeScreen(
@@ -39,7 +48,6 @@ fun AddEditRecipeScreen(
     viewModel: AddEditRecipeViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    Log.e("Jakub123", "SCREEN uiState1: ${uiState}")
     val isFabEnabled = if (uiState is UiState.AddEdit) uiState.state.isSaveEnabled else false
 
     MrbScaffold(
@@ -69,7 +77,6 @@ fun AddEditRecipeContent(
     onAddSuccess: () -> Unit,
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    Log.e("Jakub123", "SCREEN uiState2: ${uiState}")
 
     when (uiState) {
         is UiState.AddEdit -> {
@@ -79,6 +86,7 @@ fun AddEditRecipeContent(
                 onPrepTimeChange = viewModel::onPrepTimeChange,
                 onRateChange = viewModel::onRateChange,
                 onRecipeChange = viewModel::onRecipeChange,
+                onIngredientChange = viewModel::onIngredientChange,
                 onLinkToRecipeChange = viewModel::onLinkToRecipeChange,
                 onImageUpdate = viewModel::onImageUpdate,
                 uiState = uiState.state
@@ -97,13 +105,14 @@ fun AddEditRecipeContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 private fun AddEditRecipeForm(
     paddingValues: PaddingValues,
     onNameChange: (String) -> Unit,
     onPrepTimeChange: (String) -> Unit,
     onRateChange: (String) -> Unit,
     onRecipeChange: (String) -> Unit,
+    onIngredientChange: (String) -> Unit,
     onLinkToRecipeChange: (String) -> Unit,
     onImageUpdate: (String?) -> Unit,
     uiState: AddEditRecipeState
@@ -120,13 +129,10 @@ private fun AddEditRecipeForm(
         }
     )
 
-    val scrollState = rememberScrollState()
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .verticalScroll(scrollState)
             .padding(paddingValues)
             .imePadding()
-            .imeNestedScroll()
             .padding(0.dp, 0.dp, 0.dp, 20.dp)
     ) {
         val rowModifier = Modifier
@@ -136,64 +142,134 @@ private fun AddEditRecipeForm(
                 vertical = verticalPadding
             )
 
-        PickImage(
-            imageUri = uiState.imageResultUri,
-            onClick = {
-                singlePhotoPickerLauncher.launch(
-                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        item {
+            PickImage(
+                imageUri = uiState.imageResultUri,
+                onClick = {
+                    singlePhotoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
+            )
+
+            FormField(
+                fieldValue = uiState.name,
+                labelStringId = R.string.name,
+                modifier = rowModifier,
+                onValueChange = onNameChange,
+                isThereNextField = true,
+            )
+
+            Row(
+                modifier = rowModifier
+            ) {
+                val spacing = 8.dp
+                FormField(
+                    fieldValue = uiState.prepTime,
+                    labelStringId = R.string.prep_time,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(
+                            end = spacing
+                        ),
+                    onValueChange = onPrepTimeChange,
+                    isThereNextField = true,
+                )
+                FormField(
+                    fieldValue = uiState.rate,
+                    labelStringId = R.string.rate_out_of_10,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(
+                            start = spacing
+                        ),
+                    onValueChange = onRateChange,
+                    keyboardType = KeyboardType.Number,
+                    isThereNextField = true,
                 )
             }
-        )
 
-        FormField(
-            fieldValue = uiState.name,
-            labelStringId = R.string.name,
-            modifier = rowModifier,
-            onValueChange = onNameChange,
-            isThereNextField = true,
-        )
-
-        Row(
-            modifier = rowModifier
-        ) {
-            val spacing = 8.dp
             FormField(
-                fieldValue = uiState.prepTime,
-                labelStringId = R.string.prep_time,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(
-                        end = spacing
-                    ),
-                onValueChange = onPrepTimeChange,
+                fieldValue = uiState.linkToRecipe,
+                labelStringId = R.string.link_to_recipe,
+                modifier = rowModifier,
+                onValueChange = onLinkToRecipeChange,
                 isThereNextField = true,
             )
-            FormField(
-                fieldValue = uiState.rate,
-                labelStringId = R.string.rate_out_of_10,
+
+            Row(
+                modifier = rowModifier,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                val spacing = 8.dp
+                FormField(
+                    fieldValue = uiState.ingredient,
+                    labelStringId = R.string.ingredient,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(
+                            end = spacing
+                        ),
+                    onValueChange = onIngredientChange,
+                    isThereNextField = true,
+                )
+                val iconBackgroundColor = MaterialTheme.colorScheme.secondaryContainer
+                val iconColor = MaterialTheme.colorScheme.secondary
+                FilledIconButton(
+                    onClick = { },
+                    shape = CircleShape,
+                    colors = IconButtonDefaults.filledIconButtonColors(
+                        containerColor = iconBackgroundColor,
+                        contentColor = iconColor
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add icon",
+                        tint = iconColor
+                    )
+                }
+            }
+        }
+
+        items(uiState.ingredients) {
+            RemovableRow(
+                modifier = rowModifier,
+                text = it
+            ) { }
+            Spacer(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(
-                        start = spacing
-                    ),
-                onValueChange = onRateChange,
-                keyboardType = KeyboardType.Number,
-                isThereNextField = true,
+                    .padding(horizontalPadding, 0.dp)
+                    .height(1.dp)
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
             )
         }
-        FormField(
-            fieldValue = uiState.linkToRecipe,
-            labelStringId = R.string.link_to_recipe,
-            modifier = rowModifier,
-            onValueChange = onLinkToRecipeChange,
-            isThereNextField = true,
-        )
-        FormField(
-            fieldValue = uiState.recipe,
-            labelStringId = R.string.recipe,
-            modifier = rowModifier,
-            onValueChange = onRecipeChange,
-            maxLines = 50
+
+        item {
+            FormField(
+                fieldValue = uiState.recipe,
+                labelStringId = R.string.recipe,
+                modifier = rowModifier,
+                onValueChange = onRecipeChange,
+                maxLines = 50,
+            )
+
+            Spacer(
+                modifier = Modifier.height(120.dp)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AddEditRecipeFormPreview() {
+    MyRecipeBookTheme {
+        AddEditRecipeForm(
+            paddingValues = PaddingValues(),
+            {}, {}, {}, {}, {}, {}, {},
+            uiState = AddEditRecipeState()
         )
     }
 }

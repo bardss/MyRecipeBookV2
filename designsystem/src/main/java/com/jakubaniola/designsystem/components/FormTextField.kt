@@ -9,7 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import com.jakubaniola.common.FieldValue
+import com.jakubaniola.components.R
+import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 
 @ExperimentalMaterial3Api
 @Composable
@@ -40,4 +43,18 @@ fun FormField(
         ),
         singleLine = maxLines == 1,
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun FormFieldPreview() {
+    MyRecipeBookTheme {
+        FormField(
+            modifier = Modifier,
+            fieldValue = FieldValue(""),
+            labelStringId = com.jakubaniola.common.R.string.recipe,
+            onValueChange = {}
+        )
+    }
 }
