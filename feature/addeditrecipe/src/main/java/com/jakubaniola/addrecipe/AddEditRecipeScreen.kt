@@ -40,10 +40,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
 import com.jakubaniola.common.grantPersistentUriPermission
 import com.jakubaniola.designsystem.components.FormField
+import com.jakubaniola.designsystem.components.ListRow
 import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.PickImage
 import com.jakubaniola.designsystem.components.fab.FabState
-import com.jakubaniola.designsystem.components.removablelist.RemovableRow
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 
 @Composable
@@ -252,20 +252,14 @@ private fun AddEditRecipeForm(
         }
 
         itemsIndexed(uiState.ingredients) { index, item ->
-            RemovableRow(
+            ListRow(
                 modifier = rowModifier
                     .animateItemPlacement(),
                 text = item,
+                isRemovable = true,
                 onRemoveClick = {
                     onIngredientRemoveClick(index)
                 },
-            )
-            Spacer(
-                modifier = Modifier
-                    .padding(horizontalPadding, 0.dp)
-                    .height(1.dp)
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.secondaryContainer)
             )
         }
 

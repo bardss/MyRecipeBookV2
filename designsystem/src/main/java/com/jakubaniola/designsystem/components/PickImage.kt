@@ -34,7 +34,7 @@ fun PickImage(
         modifier = modifier
             .padding(40.dp, 30.dp)
             .background(
-                color = MaterialTheme.colorScheme.secondaryContainer,
+                color = MaterialTheme.colorScheme.primaryContainer,
                 shape = MaterialTheme.shapes.extraSmall,
             )
             .alpha(alpha)

@@ -3,8 +3,12 @@ package com.jakubaniola.recipedetails
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -21,12 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
 import com.jakubaniola.designsystem.components.ImagePreview
+import com.jakubaniola.designsystem.components.ListRow
 import com.jakubaniola.designsystem.components.MrbScaffold
 import com.jakubaniola.designsystem.components.fab.FabState
 import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
@@ -81,31 +87,25 @@ fun RecipeDetailsScaffold(
     uiState: UiState,
     recipeId: Int
 ) {
-    MrbScaffold(
-        topBarTitle = R.string.recipe,
-        fabStates = listOf(
-            FabState(
-                icon = Icons.Default.Delete,
-                contentDescription = "Edit recipe button",
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer,
-                onClick = onRemoveClick,
-            ),
-            FabState(
-                icon = Icons.Default.Edit,
-                contentDescription = "Edit recipe button",
-                onClick = { navigateToEditRecipe(recipeId) },
-            )
-        ),
-        content = {
-            RecipeDetailsContent(it, uiState, onConfirmRemove)
-        }
-    )
+    MrbScaffold(topBarTitle = R.string.recipe, fabStates = listOf(
+        FabState(
+            icon = Icons.Default.Delete,
+            contentDescription = "Edit recipe button",
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            onClick = onRemoveClick,
+        ), FabState(
+            icon = Icons.Default.Edit,
+            contentDescription = "Edit recipe button",
+            onClick = { navigateToEditRecipe(recipeId) },
+        )
+    ), content = {
+        RecipeDetailsContent(it, uiState, onConfirmRemove)
+    })
 
     if (uiState is UiState.Details && uiState.isRemoveDialogVisible) {
         RemoveDialog(
-            onConfirmRemoveClick,
-            onCancelRemoveClick
+            onConfirmRemoveClick, onCancelRemoveClick
         )
     }
 }
@@ -119,15 +119,14 @@ fun RecipeDetailsContent(
     val sidePadding = 18.dp
     val modifier = Modifier
         .padding(
-            top = paddingValues.calculateTopPadding() + sidePadding,
+            top = paddingValues.calculateTopPadding(),
             start = sidePadding,
             end = sidePadding
         )
         .fillMaxWidth()
     when (uiState) {
         is UiState.Details -> RecipeDetails(
-            modifier = modifier,
-            recipeDetails = uiState.state
+            modifier = modifier, recipeDetails = uiState.state
         )
 
         is UiState.Loading -> Column(modifier = modifier) {
@@ -154,8 +153,7 @@ fun RemoveDialog(
         },
         confirmButton = {
             Button(
-                onClick = onConfirmRemoveClick,
-                colors = ButtonDefaults.buttonColors(
+                onClick = onConfirmRemoveClick, colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.errorContainer,
                     contentColor = MaterialTheme.colorScheme.onErrorContainer,
                 )
@@ -165,8 +163,7 @@ fun RemoveDialog(
         },
         dismissButton = {
             Button(
-                onClick = onCancelRemoveClick,
-                colors = ButtonDefaults.buttonColors(
+                onClick = onCancelRemoveClick, colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
@@ -182,55 +179,113 @@ fun RecipeDetails(
     modifier: Modifier,
     recipeDetails: RecipeDetails
 ) {
-    val scrollState = rememberScrollState()
-    Column(
+    LazyColumn(
         modifier = modifier
-            .verticalScroll(scrollState)
     ) {
-        if (recipeDetails.imageResultUri.isNotEmpty()) {
-            ImagePreview(imageUri = recipeDetails.imageResultUri)
-        }
+        val labelModifier = Modifier.padding(0.dp, 16.dp, 0.dp, 8.dp)
+        val valueModifier = Modifier.padding(0.dp, 0.dp, 0.dp, 8.dp)
 
-        Text(
-            text = recipeDetails.name,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold
-        )
-        Row(
-            modifier = Modifier
-                .padding(
+        item {
+            if (recipeDetails.imageResultUri.isNotEmpty()) {
+                ImagePreview(imageUri = recipeDetails.imageResultUri)
+            }
+
+            Text(
+                text = recipeDetails.name,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Row(
+                modifier = Modifier.padding(
                     top = 18.dp
                 )
-        ) {
-            val startValuePadding = 16.dp
-            Text(
-                text = stringResource(id = R.string.prep_time_with_colon),
-            )
-            Text(
-                text = recipeDetails.timeToPrepare,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineSmall,
+            ) {
+                val startValuePadding = 16.dp
+                Text(
+                    text = stringResource(id = R.string.prep_time_with_colon),
+                    fontWeight = FontWeight.Light,
+                )
+                Text(
+                    text = recipeDetails.timeToPrepare,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(
+                            start = startValuePadding
+                        )
+                )
+                Text(
+                    text = stringResource(id = R.string.rate_with_colon),
+                    fontWeight = FontWeight.Light,
+                )
+                Text(
+                    text = recipeDetails.rate,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(
+                            start = startValuePadding
+                        )
+                )
+            }
+
+            if (recipeDetails.urlToRecipe.isNotEmpty()) {
+                Text(
+                    modifier = labelModifier,
+                    fontWeight = FontWeight.Light,
+                    text = stringResource(id = R.string.link_to_recipe),
+                )
+                Text(
+                    modifier = valueModifier,
+                    text = recipeDetails.urlToRecipe,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            }
+            if (recipeDetails.ingredients.isNotEmpty()) {
+                Text(
+                    modifier = labelModifier,
+                    fontWeight = FontWeight.Light,
+                    text = stringResource(id = R.string.ingredients),
+                )
+            }
+        }
+
+        items(recipeDetails.ingredients) {
+            ListRow(
                 modifier = Modifier
-                    .weight(1f)
+                    .fillMaxWidth()
                     .padding(
-                        start = startValuePadding
-                    )
+                        horizontal = 0.dp,
+                        vertical = 4.dp
+                    ),
+                text = it
             )
-            Text(
-                text = stringResource(id = R.string.rate_with_colon),
-            )
-            Text(
-                text = recipeDetails.rate,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(
-                        start = startValuePadding
-                    )
-            )
+        }
+
+        item {
+            if (recipeDetails.recipe.isNotEmpty()) {
+                Text(
+                    modifier = labelModifier,
+                    fontWeight = FontWeight.Light,
+                    text = stringResource(id = R.string.recipe),
+                )
+                Text(
+                    modifier = valueModifier,
+                    text = recipeDetails.recipe,
+                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                Spacer(
+                    modifier = Modifier
+                        .height(80.dp)
+                )
+            }
         }
     }
 }
@@ -239,25 +294,17 @@ fun RecipeDetails(
 @Composable
 fun RecipeDetailsScaffoldPreview() {
     MyRecipeBookTheme {
-        RecipeDetailsScaffold(
-            { },
-            { },
-            { },
-            { },
-            { },
-            UiState.Details(
-                RecipeDetails(
-                    name = "Recipe",
-                    timeToPrepare = "5h",
-                    rate = "5",
-                    urlToRecipe = "wefwr.przepisy.pl",
-                    ingredients = listOf(),
-                    recipe = "",
-                    imageResultUri = ""
-                ),
-                false
-            ),
-            1
+        RecipeDetailsScaffold({ }, { }, { }, { }, { }, UiState.Details(
+            RecipeDetails(
+                name = "Recipe",
+                timeToPrepare = "5h",
+                rate = "5",
+                urlToRecipe = "wefwr.przepisy.pl",
+                ingredients = listOf(),
+                recipe = "",
+                imageResultUri = ""
+            ), false
+        ), 1
         )
     }
 }
@@ -266,25 +313,17 @@ fun RecipeDetailsScaffoldPreview() {
 @Composable
 fun RecipeDetailsScaffoldDialogPreview() {
     MyRecipeBookTheme {
-        RecipeDetailsScaffold(
-            { },
-            { },
-            { },
-            { },
-            { },
-            UiState.Details(
-                RecipeDetails(
-                    name = "Recipe",
-                    timeToPrepare = "5h",
-                    rate = "5",
-                    urlToRecipe = "wefwr.przepisy.pl",
-                    ingredients = listOf(),
-                    recipe = "",
-                    imageResultUri = "",
-                ),
-                true
-            ),
-            1
+        RecipeDetailsScaffold({ }, { }, { }, { }, { }, UiState.Details(
+            RecipeDetails(
+                name = "Recipe",
+                timeToPrepare = "5h",
+                rate = "5",
+                urlToRecipe = "wefwr.przepisy.pl",
+                ingredients = listOf(),
+                recipe = "",
+                imageResultUri = "",
+            ), true
+        ), 1
         )
     }
 }
@@ -296,14 +335,15 @@ fun RecipeDetailsScaffoldDialogPreview() {
 fun RecipeDetailsPreview() {
     MyRecipeBookTheme {
         RecipeDetails(
-            Modifier,
-            RecipeDetails(
+            Modifier, RecipeDetails(
                 name = "Spaghetti Bolognese",
                 timeToPrepare = "4h",
                 rate = "9",
                 urlToRecipe = "www.przepisy.pl",
-                ingredients = listOf(),
-                recipe = "Recipe",
+                ingredients = listOf(
+                    "Onions", "Potatoes", "Cucumber"
+                ),
+                recipe = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                 imageResultUri = ""
             )
         )
