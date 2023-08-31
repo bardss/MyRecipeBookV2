@@ -12,5 +12,5 @@ class Converters {
 
     @TypeConverter
     fun toListString(value: String): List<String> =
-        value.split(SEPARATOR)
+        if (value.isNotEmpty()) value.split(SEPARATOR) else listOf()
 }
