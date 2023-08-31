@@ -22,5 +22,6 @@ fun Recipe.toAddEditRecipe() = AddEditRecipeState(
     recipe = FieldValue(recipe),
     linkToRecipe = FieldValue(urlToRecipe),
     isSaveEnabled = true,
-    imageResultUri = this.imageResultUri
+    imageResultUri = this.imageResultUri,
+    ingredients = ingredients
 )
