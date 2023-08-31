@@ -1,9 +1,6 @@
 # MyRecipeBookV2
 
 
-🚧 IN PROGRESS 🚧
-
-
 Open source recipe book Android app.
 
 
