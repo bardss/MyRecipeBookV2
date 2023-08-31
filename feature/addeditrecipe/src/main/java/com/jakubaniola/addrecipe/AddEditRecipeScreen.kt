@@ -132,8 +132,10 @@ private fun AddEditRecipeForm(
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            uri?.grantPersistentUriPermission(context)
-            onImageUpdate(uri.toString())
+            if (uri != null) {
+                uri.grantPersistentUriPermission(context)
+                onImageUpdate(uri.toString())
+            }
         }
     )
 

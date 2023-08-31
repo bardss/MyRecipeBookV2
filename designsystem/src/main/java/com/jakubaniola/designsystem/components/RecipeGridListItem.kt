@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -17,10 +18,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlin.math.abs
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,14 +56,16 @@ fun RecipeGridListItem(
                 .fillMaxWidth(),
             overlapFactor = 0.8f
         ) {
-            AsyncImage(
-                model = Uri.parse(imageUri),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp),
-                contentDescription = null,
-                contentScale = ContentScale.FillWidth
-            )
+            if (imageUri.isNotEmpty()) {
+                AsyncImage(
+                    model = Uri.parse(imageUri),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(50.dp, 200.dp),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth
+                )
+            }
             Surface(
                 shape = MaterialTheme.shapes.extraSmall
                     .copy(topEnd = ShapeDefaults.ExtraLarge.topEnd),
@@ -80,26 +88,31 @@ fun RecipeGridListItemDescription(
 ) {
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.secondary)
+            .background(
+//                MaterialTheme.colorScheme.outlineVariant
+                generateBackgroundColorFromTitle(name)
+            )
             .padding(16.dp),
     ) {
         Text(
             text = name,
             style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSecondary
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = rateLabel,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.inversePrimary
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Light,
             )
             Text(
                 text = rate,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSecondary,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
                     .padding(
                         start = 8.dp
@@ -111,13 +124,14 @@ fun RecipeGridListItemDescription(
         ) {
             Text(
                 text = prepTimeLabel,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.inversePrimary
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Light,
             )
             Text(
                 text = prepTime,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSecondary,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
                     .padding(
                         start = 8.dp
@@ -125,6 +139,19 @@ fun RecipeGridListItemDescription(
             )
         }
     }
+}
+
+@Composable
+private fun generateBackgroundColorFromTitle(title: String): Color {
+    val colors = listOf(
+        MaterialTheme.colorScheme.secondaryContainer,
+        MaterialTheme.colorScheme.tertiaryContainer,
+        MaterialTheme.colorScheme.primaryContainer,
+        MaterialTheme.colorScheme.inversePrimary,
+        MaterialTheme.colorScheme.surfaceVariant,
+        MaterialTheme.colorScheme.outlineVariant
+    )
+    return colors[abs(title.hashCode()) % colors.size]
 }
 
 @Preview(widthDp = 400, heightDp = 600)
