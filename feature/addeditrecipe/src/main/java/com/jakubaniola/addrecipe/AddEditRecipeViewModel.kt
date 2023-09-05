@@ -9,6 +9,7 @@ import com.jakubaniola.common.INVALID_ID
 import com.jakubaniola.common.validateAndCopy
 import com.jakubaniola.common.validation.ValidationResult
 import com.jakubaniola.common.validation.ValidationType
+import com.jakubaniola.common.validation.guessUrlWhenNotValid
 import com.jakubaniola.common.validation.validate
 import com.jakubaniola.model.Recipe
 import com.jakubaniola.repository.RecipeRepository
@@ -18,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -77,7 +77,7 @@ class AddEditRecipeViewModel @Inject constructor(
 
     fun onLinkToRecipeChange(linkToRecipe: String) {
         updateAddingState {
-            it.copy(linkToRecipe = validateAndCopy(linkToRecipe))
+            it.copy(urlToRecipe = validateAndCopy(linkToRecipe))
         }
     }
 
@@ -142,7 +142,7 @@ class AddEditRecipeViewModel @Inject constructor(
                     name = state.name.value,
                     timeToPrepare = state.prepTime.value,
                     rate = state.rate.value.toIntOrNull() ?: 0,
-                    urlToRecipe = state.linkToRecipe.value,
+                    urlToRecipe = guessUrlWhenNotValid(state.urlToRecipe.value),
                     recipe = state.recipe.value,
                     ingredients = state.ingredients,
                     imageResultUri = state.imageResultUri

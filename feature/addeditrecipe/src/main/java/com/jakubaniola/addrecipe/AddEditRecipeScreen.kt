@@ -4,7 +4,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -200,7 +199,7 @@ private fun AddEditRecipeForm(
             }
 
             FormField(
-                fieldValue = uiState.linkToRecipe,
+                fieldValue = uiState.urlToRecipe,
                 labelStringId = R.string.link_to_recipe,
                 modifier = rowModifier,
                 onValueChange = onLinkToRecipeChange,

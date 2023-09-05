@@ -1,5 +1,11 @@
 package com.jakubaniola.recipedetails
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import android.webkit.URLUtil
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -21,16 +27,22 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jakubaniola.common.R
+import com.jakubaniola.common.navigateToUrl
 import com.jakubaniola.designsystem.components.ImagePreview
 import com.jakubaniola.designsystem.components.ListRow
 import com.jakubaniola.designsystem.components.MrbScaffold
@@ -235,16 +247,21 @@ fun RecipeDetails(
             }
 
             if (recipeDetails.urlToRecipe.isNotEmpty()) {
+                val context = LocalContext.current
+
                 Text(
                     modifier = labelModifier,
                     fontWeight = FontWeight.Light,
                     text = stringResource(id = R.string.link_to_recipe),
                 )
                 Text(
-                    modifier = valueModifier,
+                    modifier = valueModifier
+                        .clickable { context.navigateToUrl(recipeDetails.urlToRecipe) },
                     text = recipeDetails.urlToRecipe,
                     fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.bodyLarge,
+                    color = Color.Blue,
+                    textDecoration = TextDecoration.Underline
                 )
             }
             if (recipeDetails.ingredients.isNotEmpty()) {
@@ -318,7 +335,7 @@ fun RecipeDetailsScaffoldDialogPreview() {
                 name = "Recipe",
                 timeToPrepare = "5h",
                 rate = "5",
-                urlToRecipe = "wefwr.przepisy.pl",
+                urlToRecipe = "www.przepisy.pl",
                 ingredients = listOf(),
                 recipe = "",
                 imageResultUri = "",
