@@ -1,7 +1,8 @@
 # MyRecipeBookV2
 
-
 ### Open source recipe book Android app.
+
+[Google Play Store page](https://play.google.com/store/apps/details?id=com.jakubaniola.myrecipebook) 
 
 #### Project with MVVM, Compose, Flow, Room, Coroutines, Hilt, modularisation, Version Catalogs, and Convention plugin.
 
