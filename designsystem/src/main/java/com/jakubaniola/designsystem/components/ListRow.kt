@@ -48,7 +48,6 @@ fun ListRow(
                     contentDescription = "Remove icon",
                 )
             }
-
         }
         Spacer(
             modifier = Modifier

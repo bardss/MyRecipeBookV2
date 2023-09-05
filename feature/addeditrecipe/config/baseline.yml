@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongMethod:AddEditRecipeScreen.kt$@Composable @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class) private fun AddEditRecipeForm( paddingValues: PaddingValues, onNameChange: (String) -&gt; Unit, onPrepTimeChange: (String) -&gt; Unit, onRateChange: (String) -&gt; Unit, onRecipeChange: (String) -&gt; Unit, onIngredientChange: (String) -&gt; Unit, onIngredientAddClick: () -&gt; Unit, onIngredientRemoveClick: (Int) -&gt; Unit, onLinkToRecipeChange: (String) -&gt; Unit, onImageUpdate: (String?) -&gt; Unit, uiState: AddEditRecipeState )</ID>
+    <ID>LongParameterList:AddEditRecipeScreen.kt$( paddingValues: PaddingValues, onNameChange: (String) -&gt; Unit, onPrepTimeChange: (String) -&gt; Unit, onRateChange: (String) -&gt; Unit, onRecipeChange: (String) -&gt; Unit, onIngredientChange: (String) -&gt; Unit, onIngredientAddClick: () -&gt; Unit, onIngredientRemoveClick: (Int) -&gt; Unit, onLinkToRecipeChange: (String) -&gt; Unit, onImageUpdate: (String?) -&gt; Unit, uiState: AddEditRecipeState )</ID>
+    <ID>MagicNumber:AddEditRecipeScreen.kt$0.7f</ID>
+    <ID>TooManyFunctions:AddEditRecipeViewModel.kt$AddEditRecipeViewModel : ViewModel</ID>
+  </CurrentIssues>
+</SmellBaseline>

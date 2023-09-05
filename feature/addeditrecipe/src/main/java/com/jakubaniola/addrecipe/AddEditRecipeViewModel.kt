@@ -98,7 +98,9 @@ class AddEditRecipeViewModel @Inject constructor(
                     ingredient = FieldValue(""),
                     ingredients = updatedList
                 )
-            } else it
+            } else {
+                it
+            }
         }
     }
 

@@ -21,12 +21,14 @@ import com.jakubaniola.designsystem.theme.theme.MyRecipeBookTheme
 fun ImagePreview(
     modifier: Modifier = Modifier,
     imageUri: String,
-    horizontalPadding: Dp = 20.dp,
-    verticalPadding: Dp = 20.dp
+    startPadding: Dp = 20.dp,
+    topPadding: Dp = 20.dp,
+    endPadding: Dp = 20.dp,
+    bottomPadding: Dp = 20.dp,
 ) {
     Box(
         modifier = modifier
-            .padding(horizontalPadding, verticalPadding)
+            .padding(startPadding, topPadding, endPadding, bottomPadding)
             .background(
                 color = MaterialTheme.colorScheme.secondaryContainer,
                 shape = MaterialTheme.shapes.extraSmall,
