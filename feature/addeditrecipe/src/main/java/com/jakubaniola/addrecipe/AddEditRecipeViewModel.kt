@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.jakubaniola.addrecipe.navigation.ARG_RECIPE_ID
 import com.jakubaniola.common.FieldValue
 import com.jakubaniola.common.INVALID_ID
+import com.jakubaniola.common.di.IoDispatcher
 import com.jakubaniola.common.validateAndCopy
 import com.jakubaniola.common.validation.ValidationResult
 import com.jakubaniola.common.validation.ValidationType
@@ -14,6 +15,7 @@ import com.jakubaniola.common.validation.validate
 import com.jakubaniola.model.Recipe
 import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -25,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditRecipeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val recipeRepository: RecipeRepository
 ) : ViewModel() {
 
@@ -34,7 +37,7 @@ class AddEditRecipeViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             recipeRepository.getRecipe(recipeId)
                 .map { it.toAddEditRecipe() }
                 .catch { emit(AddEditRecipeState()) }
@@ -116,7 +119,7 @@ class AddEditRecipeViewModel @Inject constructor(
     private fun updateAddingState(
         update: (AddEditRecipeState) -> AddEditRecipeState
     ) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             val value = _uiState.value
             if (value is UiState.AddEdit) {
                 val updatedState = update(value.state)
@@ -136,7 +139,7 @@ class AddEditRecipeViewModel @Inject constructor(
         ).all { it == ValidationResult.VALID }
 
     fun onSaveClick() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             val value = _uiState.value
             if (value is UiState.AddEdit) {
                 val state = value.state

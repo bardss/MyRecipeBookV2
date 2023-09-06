@@ -2,8 +2,10 @@ package com.jakubaniola.recipeslist.recipeslist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jakubaniola.common.di.IoDispatcher
 import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -12,6 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipesListViewModel @Inject constructor(
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
     recipeRepository: RecipeRepository
 ) : ViewModel() {
 
@@ -19,7 +22,7 @@ class RecipesListViewModel @Inject constructor(
     val uiState: StateFlow<UiState> = _uiState
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             recipeRepository.getRecipes()
                 .map { recipes ->
                     recipes.map { recipe -> recipe.toItem() }

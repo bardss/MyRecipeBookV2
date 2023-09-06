@@ -3,9 +3,11 @@ package com.jakubaniola.recipedetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jakubaniola.common.di.IoDispatcher
 import com.jakubaniola.recipedetails.navigation.ARG_RECIPE_ID
 import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val recipeRepository: RecipeRepository
 ) : ViewModel() {
 
@@ -28,7 +31,7 @@ class RecipeDetailsViewModel @Inject constructor(
     }
 
     private fun getLatestRecipeDetails() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             recipeRepository.getRecipe(recipeId)
                 .map { it.toDetails() }
                 .catch { }
@@ -48,7 +51,7 @@ class RecipeDetailsViewModel @Inject constructor(
     }
 
     fun onConfirmRemoveClick() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             recipeRepository.removeRecipe(recipeId)
             _uiState.value = UiState.OnRemoveSuccess
         }
