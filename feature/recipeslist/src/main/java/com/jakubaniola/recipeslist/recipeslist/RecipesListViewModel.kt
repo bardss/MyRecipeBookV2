@@ -2,7 +2,7 @@ package com.jakubaniola.recipeslist.recipeslist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jakubaniola.common.di.IoDispatcher
+import com.jakubaniola.common.di.DispatcherDefault
 import com.jakubaniola.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipesListViewModel @Inject constructor(
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
-    recipeRepository: RecipeRepository
+    @DispatcherDefault private val dispatcher: CoroutineDispatcher,
+    private val recipeRepository: RecipeRepository
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState.Loading)

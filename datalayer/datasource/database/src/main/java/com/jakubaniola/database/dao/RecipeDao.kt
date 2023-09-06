@@ -8,16 +8,16 @@ import com.jakubaniola.database.entity.RecipeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RecipeDao {
+internal interface RecipeDao : RecipeLocal {
     @Query("SELECT * FROM recipeentity")
-    fun getAllRecipes(): Flow<List<RecipeEntity>>
+    override fun getAllRecipes(): Flow<List<RecipeEntity>>
 
     @Query("SELECT * FROM recipeentity WHERE id IS :recipeId")
-    fun getRecipe(recipeId: Int): Flow<RecipeEntity>
+    override fun getRecipe(recipeId: Int): Flow<RecipeEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun setRecipe(recipe: RecipeEntity)
+    override suspend fun setRecipe(recipe: RecipeEntity)
 
     @Query("DELETE FROM recipeentity WHERE id IS :recipeId")
-    suspend fun deleteRecipe(recipeId: Int)
+    override suspend fun deleteRecipe(recipeId: Int)
 }

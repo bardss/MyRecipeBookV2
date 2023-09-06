@@ -15,6 +15,7 @@ dependencies {
     // Data sources
     implementation(project(":datalayer:datasource:database"))
     implementation(project(":model"))
+    implementation(project(":core:common"))
 
     implementation(kotlinx.coroutines.android)
     implementation(di.bundles.hilt)

@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 
 private const val SEPARATOR = ":"
 
-class Converters {
+internal class Converters {
 
     @TypeConverter
     fun fromListString(value: List<String>): String =

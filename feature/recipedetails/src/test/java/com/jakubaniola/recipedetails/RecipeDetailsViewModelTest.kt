@@ -3,7 +3,7 @@ package com.jakubaniola.recipedetails
 import androidx.lifecycle.SavedStateHandle
 import com.jakubaniola.model.Recipe
 import com.jakubaniola.recipedetails.navigation.ARG_RECIPE_ID
-import com.jakubaniola.repository.RecipeRepository
+import com.jakubaniola.repository.RecipeRepositoryImpl
 import com.jakubaniola.testing.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -30,7 +30,7 @@ class RecipeDetailsViewModelTest {
         ingredients = "Ingredients",
         recipe = "Mix it all"
     )
-    private lateinit var recipeRepository: RecipeRepository
+    private lateinit var recipeRepository: RecipeRepositoryImpl
     private lateinit var viewModel: RecipeDetailsViewModel
 
     @Before

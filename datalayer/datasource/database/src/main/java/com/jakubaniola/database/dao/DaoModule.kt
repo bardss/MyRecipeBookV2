@@ -13,5 +13,5 @@ object DaoModule {
     @Provides
     fun providesRecipesDao(
         database: MrbDatabase,
-    ): RecipeDao = database.recipeDao()
+    ): RecipeLocal = database.recipeDao()
 }

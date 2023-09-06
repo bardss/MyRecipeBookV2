@@ -11,11 +11,19 @@ import javax.inject.Qualifier
 @Module
 @InstallIn(SingletonComponent::class)
 object DispatchersModule {
-    @IoDispatcher
+    @DispatcherIo
     @Provides
     fun providesIODispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @DispatcherDefault
+    @Provides
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 }
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
-annotation class IoDispatcher
+annotation class DispatcherDefault
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class DispatcherIo

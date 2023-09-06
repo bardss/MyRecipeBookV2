@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.jakubaniola.addrecipe.navigation.ARG_RECIPE_ID
 import com.jakubaniola.common.FieldValue
 import com.jakubaniola.common.INVALID_ID
-import com.jakubaniola.common.di.IoDispatcher
+import com.jakubaniola.common.di.DispatcherDefault
 import com.jakubaniola.common.validateAndCopy
 import com.jakubaniola.common.validation.ValidationResult
 import com.jakubaniola.common.validation.ValidationType
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditRecipeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @DispatcherDefault private val dispatcher: CoroutineDispatcher,
     private val recipeRepository: RecipeRepository
 ) : ViewModel() {
 

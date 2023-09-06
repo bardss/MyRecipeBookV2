@@ -15,5 +15,5 @@ import com.jakubaniola.database.entity.RecipeEntity
 )
 @TypeConverters(Converters::class)
 abstract class MrbDatabase : RoomDatabase() {
-    abstract fun recipeDao(): RecipeDao
+    internal abstract fun recipeDao(): RecipeDao
 }
