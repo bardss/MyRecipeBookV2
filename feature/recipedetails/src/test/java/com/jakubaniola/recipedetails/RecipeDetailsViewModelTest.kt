@@ -3,8 +3,9 @@ package com.jakubaniola.recipedetails
 import androidx.lifecycle.SavedStateHandle
 import com.jakubaniola.model.Recipe
 import com.jakubaniola.recipedetails.navigation.ARG_RECIPE_ID
-import com.jakubaniola.repository.RecipeRepositoryImpl
+import com.jakubaniola.repository.RecipeRepository
 import com.jakubaniola.testing.MainDispatcherRule
+import com.jakubaniola.testing.testDispatcher
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -24,13 +25,13 @@ class RecipeDetailsViewModelTest {
         id = recipeId,
         name = "Recipe",
         timeToPrepare = "2h",
-        rate = "4",
-        resultPhotoPath = "photo.jpg",
-        urlToRecipe = "url.pl",
-        ingredients = "Ingredients",
+        rate = 4,
+        imageResultUri = "image.jpg",
+        urlToRecipe = "https://www.recipe.pl",
+        ingredients = listOf("egg", "potato", "tomato"),
         recipe = "Mix it all"
     )
-    private lateinit var recipeRepository: RecipeRepositoryImpl
+    private lateinit var recipeRepository: RecipeRepository
     private lateinit var viewModel: RecipeDetailsViewModel
 
     @Before
@@ -43,6 +44,7 @@ class RecipeDetailsViewModelTest {
             savedStateHandle = SavedStateHandle(
                 mapOf(ARG_RECIPE_ID to recipeId)
             ),
+            dispatcher = testDispatcher,
             recipeRepository = recipeRepository
         )
     }
